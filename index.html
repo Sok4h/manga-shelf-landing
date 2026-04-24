@@ -6,6 +6,8 @@
 <title>MangaShelf — Your physical manga collection, finally organized.</title>
 <meta name="description" content="MangaShelf is an Android app for physical manga collectors. Track series, volumes, and custom editions. Works offline. No account." />
 <meta name="theme-color" content="#0B1220" />
+<link rel="icon" type="image/png" href="images/logo-final.png" />
+<link rel="apple-touch-icon" href="images/logo-final.png" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
@@ -231,10 +233,11 @@
   /* ── SCREENSHOTS ── */
   .gallery-head {
     display: flex; align-items: flex-end; justify-content: space-between;
-    gap: 24px; margin-bottom: 20px; flex-wrap: wrap;
+    gap: 24px; margin-bottom: 32px; flex-wrap: wrap;
   }
   .gallery-head .section-header { margin-bottom: 0; }
-  .gallery-nav { display: inline-flex; gap: 10px; }
+  /* nav buttons only shown on mobile */
+  .gallery-nav { display: none; gap: 10px; }
   .gallery-nav button {
     width: 44px; height: 44px; border-radius: 999px;
     background: var(--surface); border: 1px solid var(--border);
@@ -245,30 +248,32 @@
   .gallery-nav button:disabled { opacity: 0.3; cursor: default; }
   .gallery-nav button svg { width: 18px; height: 18px; }
 
+  /* Desktop: 3-column grid */
   .gallery-scroll {
-    display: grid; grid-auto-flow: column;
-    grid-auto-columns: min(310px, 78vw);
-    gap: 16px; overflow-x: auto;
-    scroll-snap-type: x mandatory; scroll-behavior: smooth;
-    padding: 8px var(--gutter) 32px;
-    margin-inline: calc(var(--gutter) * -1);
-    scrollbar-width: none;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
   }
-  .gallery-scroll::-webkit-scrollbar { display: none; }
 
-  /* Mobile: one card at a time, centered */
-  @media (max-width: 640px) {
+  /* Mobile: horizontal scroll, one at a time */
+  @media (max-width: 720px) {
+    .gallery-nav { display: inline-flex; }
     .gallery-scroll {
+      grid-template-columns: none;
+      grid-auto-flow: column;
       grid-auto-columns: 78vw;
       gap: 12px;
-      padding-inline: 11vw;
-      margin-inline: 0;
-      scroll-padding-inline: 11vw;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      scroll-behavior: smooth;
+      padding: 8px 11vw 24px;
+      scrollbar-width: none;
     }
+    .gallery-scroll::-webkit-scrollbar { display: none; }
     .shot { scroll-snap-align: center; }
   }
 
-  .shot { scroll-snap-align: start; display: flex; flex-direction: column; gap: 12px; }
+  .shot { display: flex; flex-direction: column; gap: 12px; }
   .shot-img { width: 100%; height: auto; transition: transform 200ms var(--ease); }
   .shot:hover .shot-img { transform: translateY(-3px); }
   .shot-meta { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; padding-inline: 2px; }
