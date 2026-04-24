@@ -1,686 +1,592 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>MangaShelf — Your physical manga collection, finally organized.</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
-  <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>MangaShelf — Your physical manga collection, finally organized.</title>
+<meta name="description" content="MangaShelf is an Android app for physical manga collectors. Track series, volumes, and custom editions. Works offline. No account." />
+<meta name="theme-color" content="#0B1220" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --bg:        #0B1220;
+    --surface:   #131F30;
+    --surface-2: #1A2739;
+    --border:    rgba(255,255,255,0.07);
+    --border-strong: rgba(255,255,255,0.12);
+    --primary:   #0066FF;
+    --primary-hover: #1F7AFF;
+    --primary-pressed: #0052CC;
+    --on-primary: #FFFFFF;
+    --primary-container: rgba(0,102,255,0.14);
+    --primary-container-ink: #6FA8FF;
+    --text:      #E7ECF3;
+    --text-soft: #AFBAC9;
+    --text-muted:#7A8699;
+    --text-faint:#4E5A6C;
+    --radius-sm: 8px;
+    --radius:    14px;
+    --radius-lg: 22px;
+    --radius-xl: 28px;
+    --maxw: 1120px;
+    --gutter: clamp(20px, 5vw, 48px);
+    --ease: cubic-bezier(0.2, 0, 0, 1);
+  }
 
-    :root {
-      --bg:        #0B1220;
-      --surface:   #131F30;
-      --surface2:  #1A2940;
-      --primary:   #0066FF;
-      --primary-h: #0052CC;
-      --text:      #E8EDF5;
-      --muted:     #7A8BA3;
-      --border:    rgba(255,255,255,0.07);
-      --r: 16px;
-    }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+  html, body { margin: 0; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    line-height: 1.5;
+    font-size: 16px;
+    overflow-x: hidden;
+  }
+  img { max-width: 100%; display: block; }
+  a { color: inherit; text-decoration: none; }
+  button { font: inherit; color: inherit; }
+  ::selection { background: var(--primary); color: #fff; }
 
-    html { scroll-behavior: smooth; }
+  .container { max-width: var(--maxw); margin: 0 auto; padding-inline: var(--gutter); }
 
-    body {
-      font-family: 'Inter', sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      line-height: 1.6;
-      -webkit-font-smoothing: antialiased;
-      overflow-x: hidden;
-    }
+  h1, h2, h3 { margin: 0; font-weight: 700; }
+  h1 { font-size: clamp(38px, 6.5vw, 68px); line-height: 1.03; letter-spacing: -0.035em; font-weight: 800; }
+  h2 { font-size: clamp(26px, 4vw, 42px); line-height: 1.1; letter-spacing: -0.025em; }
+  h3 { font-size: 19px; line-height: 1.3; font-weight: 600; letter-spacing: -0.01em; }
 
-    /* ─── NAV ─────────────────────────────────── */
-    nav {
-      position: fixed; top: 0; left: 0; right: 0; z-index: 200;
-      background: rgba(11,18,32,0.88);
-      backdrop-filter: blur(14px);
-      border-bottom: 1px solid var(--border);
-      height: 60px;
-      display: flex; align-items: center;
-      padding: 0 28px;
-      gap: 16px;
-    }
-    .nav-brand { font-weight: 800; font-size: .95rem; color: var(--text); text-decoration: none; letter-spacing: -.3px; margin-right: auto; }
-    .nav-link   { font-size: .85rem; font-weight: 500; color: var(--muted); text-decoration: none; transition: color .2s; }
-    .nav-link:hover { color: var(--text); }
-    .nav-cta {
-      background: var(--primary); color: #fff; border: none; border-radius: 8px;
-      padding: 8px 18px; font-family: inherit; font-size: .85rem; font-weight: 600;
-      cursor: pointer; text-decoration: none; transition: background .2s;
-    }
-    .nav-cta:hover { background: var(--primary-h); }
+  .eyebrow {
+    
+    text-transform: uppercase; color: var(--primary-container-ink);
+  }
+  .lede { color: var(--text-soft); font-size: clamp(15px, 1.5vw, 18px); line-height: 1.6; }
 
-    /* ─── LAYOUT ──────────────────────────────── */
-    section { padding: 96px 28px; }
-    .container { max-width: 960px; margin: 0 auto; }
+  /* ── NAV ── */
+  .nav {
+    position: sticky; top: 0; z-index: 40;
+    backdrop-filter: blur(16px) saturate(150%);
+    -webkit-backdrop-filter: blur(16px) saturate(150%);
+    background: rgba(11,18,32,0.75);
+    border-bottom: 1px solid transparent;
+    transition: border-color 200ms var(--ease);
+  }
+  .nav.scrolled { border-bottom-color: var(--border); }
+  .nav-inner { display: flex; align-items: center; justify-content: space-between; height: 64px; }
 
-    /* ─── BUTTONS ─────────────────────────────── */
-    .btn-primary {
-      display: inline-block; background: var(--primary); color: #fff;
-      border: none; border-radius: 12px; padding: 14px 32px;
-      font-family: inherit; font-size: 1rem; font-weight: 600;
-      cursor: pointer; text-decoration: none;
-      transition: background .2s, transform .15s;
-    }
-    .btn-primary:hover { background: var(--primary-h); transform: translateY(-1px); }
-    .btn-outline {
-      display: inline-block; background: transparent; color: var(--primary);
-      border: 2px solid var(--primary); border-radius: 12px; padding: 13px 32px;
-      font-family: inherit; font-size: 1rem; font-weight: 600;
-      cursor: pointer; text-decoration: none;
-      transition: background .2s, transform .15s;
-    }
-    .btn-outline:hover { background: rgba(0,102,255,.08); transform: translateY(-1px); }
+  .brand { display: inline-flex; align-items: center; gap: 10px; font-weight: 700; letter-spacing: -0.01em; }
+  .brand-logo {
+    width: 30px; height: 30px; border-radius: 8px;
+    overflow: hidden; flex-shrink: 0;
+  }
+  .brand-logo img { width: 100%; height: 100%; object-fit: cover; }
 
-    /* ─── SECTION LABELS ──────────────────────── */
-    .label {
-      display: inline-block;
-      font-size: .72rem; font-weight: 700; letter-spacing: 2px;
-      text-transform: uppercase; color: var(--primary); margin-bottom: 12px;
-    }
-    h2 {
-      font-size: clamp(1.7rem,4vw,2.4rem); font-weight: 800;
-      letter-spacing: -.8px; line-height: 1.15; margin-bottom: 14px;
-    }
-    .sub { color: var(--muted); font-size: .95rem; max-width: 500px; }
+  .nav-links { display: none; gap: 28px; font-size: 14px; color: var(--text-soft); }
+  .nav-links a { transition: color 150ms var(--ease); }
+  .nav-links a:hover { color: var(--text); }
+  @media (min-width: 720px) { .nav-links { display: inline-flex; } }
 
-    /* ─── PHONE MOCKUP ────────────────────────── */
-    /*
-     * To replace a screenshot, find the <img> tag inside .phone-screen
-     * that matches the label comment above it, and set its src attribute.
-     * Example: <img src="screenshots/collection.png" … />
-     * Recommended size: ~390×844px (standard Android screenshot ratio)
-    */
-    .phone {
-      position: relative;
-      width: 210px;
-      flex-shrink: 0;
-      background: #0D1826;
-      border-radius: 38px;
-      border: 2px solid rgba(255,255,255,0.13);
-      padding: 12px;
-      box-shadow:
-        0 0 0 1px rgba(0,0,0,.6),
-        inset 0 0 0 1px rgba(255,255,255,.04),
-        0 32px 80px rgba(0,0,0,.55);
-    }
-    /* Dynamic island */
-    .phone::before {
-      content: '';
-      position: absolute;
-      top: 18px; left: 50%;
-      transform: translateX(-50%);
-      width: 64px; height: 8px;
-      background: #060d17;
-      border-radius: 4px;
-      z-index: 10;
-    }
-    /* Side button */
-    .phone::after {
-      content: '';
-      position: absolute;
-      right: -4px; top: 72px;
-      width: 3px; height: 36px;
-      background: rgba(255,255,255,.1);
-      border-radius: 2px;
-    }
-    .phone-screen {
-      width: 100%;
-      aspect-ratio: 9/19.5;
-      border-radius: 28px;
-      overflow: hidden;
-      background: var(--bg);
-      display: flex; align-items: center; justify-content: center;
-    }
-    .phone-screen img {
-      width: 100%; height: 100%;
-      object-fit: cover;
-      display: block;
-    }
-    /* Placeholder shown when no img src is set */
-    .phone-placeholder {
-      display: flex; flex-direction: column;
-      align-items: center; justify-content: center; gap: 10px;
-      width: 100%; height: 100%;
-    }
-    .phone-placeholder svg { opacity: .2; }
-    .phone-placeholder span { font-size: .7rem; font-weight: 600; color: var(--muted); text-align: center; padding: 0 16px; }
+  .nav-cta {
+    display: inline-flex; align-items: center; gap: 8px;
+    height: 38px; padding: 0 18px;
+    border-radius: 999px; background: var(--primary); color: var(--on-primary);
+    font-size: 14px; font-weight: 600; border: 0; cursor: pointer;
+    transition: background 150ms var(--ease), transform 150ms var(--ease);
+  }
+  .nav-cta:hover { background: var(--primary-hover); }
+  .nav-cta:active { transform: translateY(1px); background: var(--primary-pressed); }
+  .nav-cta svg { width: 15px; height: 15px; }
 
-    /* ─── HERO ────────────────────────────────── */
-    #hero {
-      padding-top: 128px;
-      min-height: 100vh;
-      display: flex; align-items: center;
-      overflow: hidden;
-      position: relative;
-    }
-    /* Subtle glow behind mockups */
-    #hero::before {
-      content: '';
-      position: absolute;
-      right: -100px; top: 50%;
-      transform: translateY(-50%);
-      width: 600px; height: 600px;
-      background: radial-gradient(circle, rgba(0,102,255,.12) 0%, transparent 70%);
-      pointer-events: none;
-    }
-    .hero-layout {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 64px;
-      align-items: center;
-    }
-    .hero-text {}
-    .app-icon {
-      width: 72px; height: 72px;
-      border-radius: 18px;
-      background: var(--surface);
-      border: 1px solid var(--border);
-      display: flex; align-items: center; justify-content: center;
-      margin-bottom: 28px;
-    }
-    h1 {
-      font-size: clamp(2.4rem,5vw,3.4rem);
-      font-weight: 800; letter-spacing: -1.8px; line-height: 1.05;
-      margin-bottom: 20px;
-    }
-    .tagline { font-size: clamp(.95rem,2vw,1.15rem); color: var(--muted); margin-bottom: 36px; max-width: 380px; }
-    .hero-actions { display: flex; gap: 12px; flex-wrap: wrap; }
+  /* ── BUTTONS ── */
+  .btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+    height: 52px; padding: 0 28px; border-radius: 999px;
+    font-size: 16px; font-weight: 600; border: 0; cursor: pointer;
+    transition: background 150ms var(--ease), transform 150ms var(--ease), box-shadow 200ms var(--ease);
+    text-decoration: none; white-space: nowrap;
+  }
+  .btn svg { width: 18px; height: 18px; flex-shrink: 0; }
+  .btn-primary {
+    background: var(--primary); color: var(--on-primary);
+    box-shadow: 0 8px 28px -8px rgba(0,102,255,0.55);
+  }
+  .btn-primary:hover { background: var(--primary-hover); box-shadow: 0 12px 32px -8px rgba(0,102,255,0.7); }
+  .btn-primary:active { transform: translateY(1px); background: var(--primary-pressed); }
+  .btn-secondary {
+    background: transparent; color: var(--text);
+    border: 1px solid var(--border-strong);
+  }
+  .btn-secondary:hover { background: var(--surface); border-color: rgba(255,255,255,0.2); }
+  .btn-secondary:active { transform: translateY(1px); }
 
-    /* Two staggered phones */
-    .hero-phones {
-      display: flex;
-      justify-content: center;
-      gap: 20px;
-      align-items: flex-start;
-      position: relative;
-    }
-    .hero-phones .phone:first-child {
-      margin-top: 32px;
-    }
-    .hero-phones .phone:last-child {
-      margin-top: 0;
-      width: 190px;
-    }
+  /* ── HERO ── */
+  .hero {
+    position: relative;
+    padding-top: clamp(64px, 11vw, 116px);
+    padding-bottom: clamp(72px, 12vw, 136px);
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: radial-gradient(65% 55% at 50% -5%, rgba(0,102,255,0.13), transparent 70%);
+    pointer-events: none; z-index: 0;
+  }
+  .hero-grid {
+    position: relative; z-index: 1;
+    display: grid; grid-template-columns: 1fr;
+    gap: clamp(48px, 8vw, 88px); align-items: center;
+  }
+  @media (min-width: 960px) { .hero-grid { grid-template-columns: 1.1fr 0.9fr; } }
 
-    /* ─── FEATURES ────────────────────────────── */
-    #features { background: var(--surface); }
-    .features-grid {
-      display: grid;
-      grid-template-columns: repeat(3,1fr);
-      gap: 16px;
-      margin-top: 48px;
-    }
-    .feature-card {
-      background: var(--bg);
-      border: 1px solid var(--border);
-      border-radius: 20px;
-      padding: 28px 24px;
-      transition: border-color .2s, transform .2s;
-    }
-    .feature-card:hover { border-color: rgba(0,102,255,.3); transform: translateY(-2px); }
-    .fi {
-      width: 44px; height: 44px;
-      border-radius: 10px;
-      background: rgba(0,102,255,.12);
-      display: flex; align-items: center; justify-content: center;
-      margin-bottom: 18px;
-    }
-    .fi svg { width: 20px; height: 20px; color: var(--primary); }
-    .feature-card h3 { font-size: .95rem; font-weight: 700; margin-bottom: 8px; letter-spacing: -.2px; }
-    .feature-card p  { font-size: .87rem; color: var(--muted); line-height: 1.65; }
+  .hero-icon {
+    width: 80px; height: 80px; border-radius: 20px;
+    overflow: hidden; margin-bottom: 28px;
+    box-shadow: 0 0 0 1px rgba(255,255,255,0.08), 0 16px 36px -8px rgba(0,102,255,0.4);
+  }
+  .hero-icon img { width: 100%; height: 100%; object-fit: cover; }
+  .hero h1 { margin-bottom: 20px; }
+  .hero .lede { margin-bottom: 36px; }
+  .hero-ctas { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+  .hero-meta {
+    margin-top: 28px; display: flex; flex-wrap: wrap; gap: 20px;
+    font-size: 13px; color: var(--text-muted);
+  }
+  .hero-meta span { display: inline-flex; align-items: center; gap: 7px; }
+  .hero-meta .dot { width: 5px; height: 5px; border-radius: 999px; background: var(--primary); flex-shrink: 0; }
+  .hero-stat {
+    display: inline-flex; align-items: center; gap: 8px;
+    margin-top: 20px;
+    font-size: 13px; font-weight: 500;
+    color: var(--primary-container-ink);
+    background: var(--primary-container);
+    border-radius: 999px;
+    padding: 5px 14px;
+  }
+  .hero-stat svg { width: 13px; height: 13px; flex-shrink: 0; }
 
-    /* ─── SCREENSHOTS ─────────────────────────── */
-    #screenshots { padding-bottom: 80px; }
-    #screenshots .container { margin-bottom: 48px; }
-    .scroll-outer {
-      padding: 32px 28px 40px;
-      overflow-x: auto;
-      scroll-snap-type: x mandatory;
-      -webkit-overflow-scrolling: touch;
-      scrollbar-width: none;
-    }
-    .scroll-outer::-webkit-scrollbar { display: none; }
-    .scroll-track {
-      display: flex;
-      gap: 24px;
-      width: max-content;
-      padding: 8px 4px;
-      margin: 0 auto;
-    }
-    /* Rotate alternating phones slightly */
-    .scroll-track .phone:nth-child(odd)  { transform: rotate(-1.5deg); }
-    .scroll-track .phone:nth-child(even) { transform: rotate(1.5deg); margin-top: 16px; }
-    .scroll-track .phone { scroll-snap-align: center; width: 220px; }
+  /* mockup images — frames are baked into the PNGs */
+  .phone-wrap {
+    position: relative;
+    display: grid; place-items: center;
+    min-height: 520px;
+  }
+  .phone-main {
+    position: relative; z-index: 2;
+    width: min(290px, 78vw);
+    transform: rotate(-3deg);
+  }
+  .phone-main img { width: 100%; height: auto; }
+  .phone-secondary {
+    position: absolute;
+    width: min(195px, 48vw);
+    transform: rotate(6deg);
+    right: -4%; bottom: 2%;
+    z-index: 1;
+  }
+  .phone-secondary img { width: 100%; height: auto; }
+  @media (max-width: 720px) {
+    .phone-secondary { display: none; }
+    .phone-main { transform: none; }
+  }
 
-    .screenshot-caption {
-      margin-top: 18px;
-      text-align: center;
-      font-size: .78rem;
-      font-weight: 600;
-      color: var(--muted);
-      letter-spacing: .5px;
-    }
+  /* ── SECTION SHELL ── */
+  section { scroll-margin-top: 80px; }
+  .section { padding-block: clamp(72px, 10vw, 120px); }
+  .section-header { max-width: 640px; margin-bottom: 52px; }
+  .section-header .eyebrow { margin-bottom: 14px; display: block; }
+  .section-header p { margin-top: 14px; }
 
-    /* Scroll fade edges */
-    .scroll-fade {
-      position: relative;
-    }
-    .scroll-fade::before, .scroll-fade::after {
-      content: '';
-      position: absolute;
-      top: 0; bottom: 0;
-      width: 80px;
-      z-index: 10;
-      pointer-events: none;
-    }
-    .scroll-fade::before { left: 0;  background: linear-gradient(to right,  var(--bg), transparent); }
-    .scroll-fade::after  { right: 0; background: linear-gradient(to left, var(--bg), transparent); }
+  /* ── FEATURES ── */
+  #features { background: var(--surface); }
+  .features-grid { display: grid; gap: 14px; grid-template-columns: 1fr; }
+  @media (min-width: 760px) { .features-grid { grid-template-columns: repeat(3,1fr); } }
+  .feature {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 28px 26px;
+    position: relative; overflow: hidden;
+    transition: border-color 200ms var(--ease), transform 200ms var(--ease);
+  }
+  .feature:hover { border-color: rgba(0,102,255,0.28); transform: translateY(-2px); }
+  .feature .icon {
+    width: 44px; height: 44px; border-radius: 12px;
+    background: var(--primary-container); color: var(--primary-container-ink);
+    display: grid; place-items: center; margin-bottom: 20px;
+  }
+  .feature .icon svg { width: 22px; height: 22px; }
+  .feature h3 { margin-bottom: 10px; }
+  .feature p { margin: 0; color: var(--text-soft); font-size: 15px; line-height: 1.6; }
+  .feature .num {
+    position: absolute; top: 20px; right: 22px;
+    font-size: 11px; font-family: ui-monospace, "SF Mono", monospace;
+    color: var(--text-faint); letter-spacing: 0.1em;
+  }
 
-    /* ─── BETA ────────────────────────────────── */
-    #beta { background: var(--surface); }
-    .cta-box {
-      background: linear-gradient(135deg, rgba(0,102,255,.08) 0%, transparent 60%),
-                  var(--bg);
-      border: 1px solid rgba(0,102,255,.2);
-      border-radius: 28px;
-      padding: 56px 48px;
-      text-align: center;
-      max-width: 620px;
-      margin: 0 auto;
-      position: relative;
-      overflow: hidden;
-    }
-    .cta-box::before {
-      content: '';
-      position: absolute;
-      top: -60px; left: 50%;
-      transform: translateX(-50%);
-      width: 300px; height: 300px;
-      background: radial-gradient(circle, rgba(0,102,255,.1) 0%, transparent 70%);
-      pointer-events: none;
-    }
-    .cta-box h2 { margin-bottom: 12px; }
-    .cta-box p  { color: var(--muted); font-size: .93rem; margin-bottom: 32px; max-width: 440px; margin-left: auto; margin-right: auto; }
+  /* ── SCREENSHOTS ── */
+  .gallery-head {
+    display: flex; align-items: flex-end; justify-content: space-between;
+    gap: 24px; margin-bottom: 20px; flex-wrap: wrap;
+  }
+  .gallery-head .section-header { margin-bottom: 0; }
+  .gallery-nav { display: inline-flex; gap: 10px; }
+  .gallery-nav button {
+    width: 44px; height: 44px; border-radius: 999px;
+    background: var(--surface); border: 1px solid var(--border);
+    color: var(--text); cursor: pointer; display: grid; place-items: center;
+    transition: background 150ms var(--ease), border-color 150ms var(--ease), opacity 150ms var(--ease);
+  }
+  .gallery-nav button:hover { background: var(--surface-2); border-color: var(--border-strong); }
+  .gallery-nav button:disabled { opacity: 0.3; cursor: default; }
+  .gallery-nav button svg { width: 18px; height: 18px; }
 
-    /* ─── iOS ─────────────────────────────────── */
-    #ios {}
-    #ios .cta-box {
-      background: var(--surface);
-      border-color: var(--border);
-    }
-    .badge-pill {
-      display: inline-flex; align-items: center; gap: 6px;
-      background: rgba(255,255,255,.05);
-      border: 1px solid var(--border);
-      border-radius: 999px;
-      padding: 5px 14px;
-      font-size: .75rem; font-weight: 600; color: var(--muted);
-      margin-bottom: 24px;
-    }
+  .gallery-scroll {
+    display: grid; grid-auto-flow: column;
+    grid-auto-columns: min(310px, 78vw);
+    gap: 16px; overflow-x: auto;
+    scroll-snap-type: x mandatory; scroll-behavior: smooth;
+    padding: 8px var(--gutter) 32px;
+    margin-inline: calc(var(--gutter) * -1);
+    scrollbar-width: none;
+  }
+  .gallery-scroll::-webkit-scrollbar { display: none; }
 
-    /* ─── FOOTER ──────────────────────────────── */
-    footer {
-      border-top: 1px solid var(--border);
-      padding: 36px 28px;
-      text-align: center;
+  /* Mobile: one card at a time, centered */
+  @media (max-width: 640px) {
+    .gallery-scroll {
+      grid-auto-columns: 78vw;
+      gap: 12px;
+      padding-inline: 11vw;
+      margin-inline: 0;
+      scroll-padding-inline: 11vw;
     }
-    .footer-links {
-      display: flex; justify-content: center; align-items: center;
-      gap: 8px; flex-wrap: wrap; margin-bottom: 14px;
-    }
-    .footer-links a { color: var(--muted); text-decoration: none; font-size: .85rem; transition: color .2s; }
-    .footer-links a:hover { color: var(--text); }
-    .sep { color: var(--border); }
-    .credit { font-size: .82rem; color: var(--muted); }
-    .credit span { color: #e05c5c; }
+    .shot { scroll-snap-align: center; }
+  }
 
-    /* ─── RESPONSIVE ──────────────────────────── */
-    @media (max-width: 720px) {
-      .hero-layout { grid-template-columns: 1fr; text-align: center; gap: 48px; }
-      .tagline { margin-left: auto; margin-right: auto; }
-      .hero-actions { justify-content: center; }
-      .app-icon { margin: 0 auto 28px; }
-      .hero-phones { justify-content: center; }
-      .features-grid { grid-template-columns: 1fr; }
-      section { padding: 72px 20px; }
-      #hero { padding-top: 100px; min-height: auto; }
-      .cta-box { padding: 36px 24px; }
-    }
-    @media (max-width: 480px) {
-      .hero-phones .phone { width: 150px; }
-      .hero-phones .phone:last-child { width: 138px; }
-      .nav-link { display: none; }
-    }
-  </style>
+  .shot { scroll-snap-align: start; display: flex; flex-direction: column; gap: 12px; }
+  .shot-img { width: 100%; height: auto; transition: transform 200ms var(--ease); }
+  .shot:hover .shot-img { transform: translateY(-3px); }
+  .shot-meta { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; padding-inline: 2px; }
+  .shot-meta .label { font-size: 14px; font-weight: 600; color: var(--text); }
+  .shot-meta .idx { font-size: 11px; font-family: ui-monospace, "SF Mono", monospace; color: var(--text-faint); letter-spacing: 0.1em; flex-shrink: 0; }
+  .shot-desc { font-size: 13px; color: var(--text-muted); padding-inline: 2px; margin-top: -4px; line-height: 1.4; }
+
+  #screenshots { padding-top: clamp(48px, 6vw, 80px); padding-bottom: clamp(32px, 4vw, 56px); }
+  #beta { padding-top: clamp(32px, 4vw, 56px); }
+
+  /* ── BETA + iOS ── */
+  .cta-stack { display: grid; gap: 18px; grid-template-columns: 1fr; }
+  @media (min-width: 860px) { .cta-stack { grid-template-columns: 1.3fr 1fr; } }
+  .cta-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-xl);
+    padding: clamp(32px, 5vw, 52px);
+    position: relative; overflow: hidden;
+  }
+  .cta-card.primary {
+    background: radial-gradient(100% 100% at 0% 0%, rgba(0,102,255,0.16), transparent 55%), var(--surface);
+    border-color: rgba(0,102,255,0.28);
+  }
+  .cta-card h2 { margin-bottom: 14px; }
+  .cta-card p { color: var(--text-soft); margin: 0 0 28px; max-width: 48ch; font-size: 15px; line-height: 1.6; }
+  .pill {
+    display: inline-flex; align-items: center; gap: 8px;
+    height: 26px; padding: 0 12px; border-radius: 999px;
+    font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;
+    background: var(--primary-container); color: var(--primary-container-ink);
+    margin-bottom: 20px;
+  }
+  .pill-dot { width: 5px; height: 5px; border-radius: 999px; background: var(--primary-container-ink); }
+  .cta-card.secondary .pill { background: rgba(255,255,255,0.06); color: var(--text-soft); }
+
+  /* ── FOOTER ── */
+  footer { border-top: 1px solid var(--border); padding-block: 40px; margin-top: 24px; }
+  .foot {
+    display: flex; flex-wrap: wrap; gap: 16px 28px;
+    align-items: center; justify-content: space-between;
+    font-size: 14px; color: var(--text-muted);
+  }
+  .foot-links { display: inline-flex; flex-wrap: wrap; gap: 8px 20px; align-items: center; }
+  .foot-links a { color: var(--text-soft); transition: color 150ms var(--ease); }
+  .foot-links a:hover { color: var(--text); }
+  .foot-links .sep { width: 3px; height: 3px; border-radius: 999px; background: var(--text-faint); display: inline-block; }
+  .heart { color: #e05c5c; }
+
+  /* ── REVEAL ── */
+  .reveal { opacity: 0; transform: translateY(18px); transition: opacity 600ms var(--ease), transform 600ms var(--ease); }
+  .reveal.in { opacity: 1; transform: none; }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; }
+  }
+</style>
 </head>
 <body>
 
-<!-- ═══════════════════════════════════════════
-     NAV
-════════════════════════════════════════════ -->
-<nav>
-  <a class="nav-brand" href="#hero">MangaShelf</a>
-  <a class="nav-link" href="#features">Features</a>
-  <a class="nav-link" href="#screenshots">Screenshots</a>
-  <a class="nav-cta" href="#beta">Join the Beta</a>
-</nav>
+<header class="nav" id="nav">
+  <div class="container nav-inner">
+    <a class="brand" href="#top">
+      <span class="brand-logo">
+        <img src="images/logo-final.png" alt="MangaShelf" />
+      </span>
+      MangaShelf
+    </a>
+    <nav class="nav-links" aria-label="Primary">
+      <a href="#features">Features</a>
+      <a href="#screenshots">Screenshots</a>
+      <a href="#beta">Beta</a>
+    </nav>
+    <a class="nav-cta" href="#beta">
+      Join Beta
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg>
+    </a>
+  </div>
+</header>
 
+<main id="top">
 
-<!-- ═══════════════════════════════════════════
-     HERO
-════════════════════════════════════════════ -->
-<section id="hero">
-  <div class="container">
-    <div class="hero-layout">
+  <!-- ── HERO ── -->
+  <section class="hero">
+    <div class="container hero-grid">
 
-      <!-- Left: text -->
-      <div class="hero-text">
-        <div class="app-icon">
-          <svg width="38" height="38" viewBox="0 0 52 52" fill="none">
-            <rect x="6"  y="10" width="8"  height="32" rx="2" fill="#0066FF"/>
-            <rect x="17" y="14" width="6"  height="28" rx="2" fill="#4D9FFF"/>
-            <rect x="26" y="8"  width="9"  height="34" rx="2" fill="#0066FF"/>
-            <rect x="38" y="16" width="7"  height="26" rx="2" fill="#4D9FFF"/>
-            <rect x="4"  y="42" width="44" height="3"  rx="1.5" fill="#7AB8FF"/>
-          </svg>
+      <div class="reveal">
+        <div class="hero-icon">
+          <img src="images/logo-final.png" alt="MangaShelf app icon" />
         </div>
-        <h1>MangaShelf</h1>
-        <p class="tagline">Your physical manga collection, finally organized.</p>
-        <div class="hero-actions">
-          <a class="btn-primary" href="#beta">Join the Android Beta</a>
-          <a class="btn-outline" href="#features">See features</a>
+        <h1>Your manga, organized.</h1>
+        <p class="lede">Track series, volumes and editions. Always know what's missing.</p>
+        <div class="hero-ctas">
+          <a class="btn btn-primary" href="#beta">
+            Join the Android Beta
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg>
+          </a>
+          <a class="btn btn-secondary" href="#features">See what it does</a>
+        </div>
+        <div class="hero-meta">
+          <span><span class="dot"></span>Android</span>
+          <span><span class="dot"></span>Works offline</span>
+          <span><span class="dot"></span>No account, no tracking</span>
+        </div>
+        <div class="hero-stat">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+          Tested with collections of 900+ volumes.
         </div>
       </div>
 
-      <!-- Right: two staggered phones -->
-      <div class="hero-phones">
+      <div class="phone-wrap reveal" aria-hidden="true">
+        <!-- Main hero phone — replace src to update -->
+        <div class="phone-main">
+          <img src="images/Collection-mobile-portrait.png" alt="" loading="lazy" />
+        </div>
+        <!-- Secondary overlapping phone — replace src to update -->
+        <div class="phone-secondary">
+          <img src="images/edition-detail-grid-portrait.png" alt="" loading="lazy" />
+        </div>
+      </div>
 
-        <!-- ── HERO PHONE 1 ──────────────────────
-             Replace src with your Collection screenshot.
-             Recommended: screenshots/collection.png
-        ─────────────────────────────────────── -->
-        <div class="phone">
-          <div class="phone-screen">
-            <img src="" alt="My Collection"
-                 onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
-            <div class="phone-placeholder" style="display:flex">
-              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#7A8BA3" stroke-width="1.5">
-                <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
-              </svg>
-              <span>My Collection</span>
-            </div>
+    </div>
+  </section>
+
+  <!-- ── FEATURES ── -->
+  <section class="section" id="features">
+    <div class="container">
+      <div class="section-header reveal">
+        <h3 class="eyebrow">Features</h3>
+        <h2>Everything a manga collector actually needs.</h2>
+      </div>
+      <div class="features-grid">
+
+        <article class="feature reveal">
+          <span class="num">01</span>
+          <div class="icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h4v16H4z"/><path d="M10 4h4v16h-4z"/><path d="m16 5 3.5 1-3 15-3.5-1z"/></svg>
           </div>
+          <h3>Never lose track again</h3>
+          <p>Every volume. Owned, missing, read — always at hand.</p>
+        </article>
+
+        <article class="feature reveal">
+          <span class="num">02</span>
+          <div class="icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18"/><path d="M9 4v5"/><path d="M15 4v5"/></svg>
+          </div>
+          <h3>Every edition counts.</h3>
+          <p>Tankōbon, deluxe, omnibus, foreign prints — track them your way</p>
+        </article>
+
+        <article class="feature reveal">
+          <span class="num">03</span>
+          <div class="icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21 12 17l-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+          </div>
+          <h3>From missing to owned in one tap</h3>
+          <p>Spot it at the store, mark it owned instantly.</p>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ── SCREENSHOTS ──
+       To replace an image: change the src inside each .shot.
+       Portrait mockups recommended (already phone-framed PNGs).
+  ── -->
+  <section class="section" id="screenshots">
+    <div class="container">
+      <div class="gallery-head">
+        <div class="section-header reveal" style="margin-bottom:0">
+          <span class="eyebrow">Screenshots</span>
+          <h2>A quick tour.</h2>
+        </div>
+        <div class="gallery-nav reveal" aria-label="Scroll screenshots">
+          <button type="button" id="gPrev" aria-label="Previous">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+          </button>
+          <button type="button" id="gNext" aria-label="Next">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 6 6 6-6 6"/></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+      <div class="gallery-scroll" id="gallery" role="list">
+
+        <!-- 01 My Collection -->
+        <figure class="shot" role="listitem">
+          <img class="shot-img" src="images/Collection-mobile-portrait.png" alt="My Collection screen" loading="lazy" />
+          <figcaption class="shot-meta"><span class="label">My Collection</span><span class="idx">01 / 06</span></figcaption>
+          <p class="shot-desc">208 series, always organized</p>
+        </figure>
+
+        <!-- 02 Edition Grid -->
+        <figure class="shot" role="listitem">
+          <img class="shot-img" src="images/edition-detail-grid-portrait.png" alt="Edition grid view" loading="lazy" />
+          <figcaption class="shot-meta"><span class="label">Edition Grid</span><span class="idx">02 / 06</span></figcaption>
+          <p class="shot-desc">Owned vs missing, at a glance</p>
+        </figure>
+
+        <!-- 03 Volume List -->
+        <figure class="shot" role="listitem">
+          <img class="shot-img" src="images/edition-detail-list-portrait.png" alt="Volume list view" loading="lazy" />
+          <figcaption class="shot-meta"><span class="label">Volume List</span><span class="idx">03 / 06</span></figcaption>
+          <p class="shot-desc">Track ownership and reading separately</p>
+        </figure>
+
+        <!-- 04 Manga Detail -->
+        <figure class="shot" role="listitem">
+          <img class="shot-img" src="images/Manga-detail-mobile-portrait.png" alt="Manga detail screen" loading="lazy" />
+          <figcaption class="shot-meta"><span class="label">Manga Detail</span><span class="idx">04 / 06</span></figcaption>
+          <p class="shot-desc">Multiple editions, one series</p>
+        </figure>
+
+        <!-- 05 Search -->
+        <figure class="shot" role="listitem">
+          <img class="shot-img" src="images/seach-mobile-portrait.png" alt="Manga search screen" loading="lazy" />
+          <figcaption class="shot-meta"><span class="label">Search</span><span class="idx">05 / 06</span></figcaption>
+          <p class="shot-desc">Find any series instantly</p>
+        </figure>
+
+        <!-- 06 Wishlist -->
+        <figure class="shot" role="listitem">
+          <img class="shot-img" src="images/wishlist-mobile-portrait.png" alt="Wishlist screen" loading="lazy" />
+          <figcaption class="shot-meta"><span class="label">Wishlist</span><span class="idx">06 / 06</span></figcaption>
+          <p class="shot-desc">Your hunting list, grouped by edition</p>
+        </figure>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ── BETA + iOS ── -->
+  <section class="section" id="beta">
+    <div class="container">
+      <div class="cta-stack">
+
+        <div class="cta-card primary reveal">
+          <span class="pill">
+            <span class="pill-dot"></span>
+            Android — open beta
+          </span>
+          <h2>Help shape MangaShelf.</h2>
+          <p>Join the free Android beta and help build the app manga collectors actually deserve.</p>
+          <!-- Replace [GOOGLE_FORM_URL] with your Google Form link -->
+          <a class="btn btn-primary" href="[GOOGLE_FORM_URL]" target="_blank" rel="noopener noreferrer">
+            Apply for Beta
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7"/><path d="M7 7h10v10"/></svg>
+          </a>
         </div>
 
-        <!-- ── HERO PHONE 2 ──────────────────────
-             Replace src with your Edition Grid screenshot.
-             Recommended: screenshots/edition-grid.png
-        ─────────────────────────────────────── -->
-        <div class="phone">
-          <div class="phone-screen">
-            <img src="" alt="Edition Grid"
-                 onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
-            <div class="phone-placeholder" style="display:flex">
-              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#7A8BA3" stroke-width="1.5">
-                <rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/>
-                <rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/>
-              </svg>
-              <span>Edition Grid</span>
-            </div>
-          </div>
+        <div class="cta-card secondary reveal" id="ios">
+          <span class="pill">Want MangaShelf on iPhone?</span>
+          <h2>We're gauging interest.</h2>
+          <p>Leave your email and we'll notify you when it's ready</p>
+          <!-- Replace [GOOGLE_FORM_URL_IOS] with your Google Form link -->
+          <a class="btn btn-secondary" href="[GOOGLE_FORM_URL_IOS]" target="_blank" rel="noopener noreferrer">
+            Join iOS Waitlist
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7"/><path d="M7 7h10v10"/></svg>
+          </a>
         </div>
 
       </div>
     </div>
-  </div>
-</section>
+  </section>
 
+</main>
 
-<!-- ═══════════════════════════════════════════
-     FEATURES
-════════════════════════════════════════════ -->
-<section id="features">
-  <div class="container">
-    <p class="label">Features</p>
-    <h2>Everything your collection needs</h2>
-    <p class="sub">Built for collectors who care about their shelves.</p>
-    <div class="features-grid">
-
-      <div class="feature-card">
-        <div class="fi">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
-            <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
-            <polyline points="9 11 11 13 15 9"/>
-          </svg>
-        </div>
-        <h3>Track your collection</h3>
-        <p>Every series, every volume. Owned, missing, read or unread. Always with you.</p>
-      </div>
-
-      <div class="feature-card">
-        <div class="fi">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <rect x="2" y="3" width="7" height="18" rx="1"/>
-            <rect x="15" y="3" width="7" height="18" rx="1"/>
-            <line x1="10" y1="7" x2="14" y2="7"/>
-            <line x1="10" y1="12" x2="14" y2="12"/>
-            <line x1="10" y1="17" x2="14" y2="17"/>
-          </svg>
-        </div>
-        <h3>Custom editions</h3>
-        <p>Official Tankōbon or your own editions. 3-in-1, Deluxe, foreign prints — name them anything.</p>
-      </div>
-
-      <div class="feature-card">
-        <div class="fi">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
-          </svg>
-        </div>
-        <h3>Wishlist</h3>
-        <p>Mark the volumes you're hunting. Find them at the store, mark them owned in one tap.</p>
-      </div>
-
-    </div>
-  </div>
-</section>
-
-
-<!-- ═══════════════════════════════════════════
-     SCREENSHOTS
-     ───────────────────────────────────────────
-     HOW TO REPLACE IMAGES:
-     1. Put your screenshots in a folder, e.g. "screenshots/"
-     2. Find the phone block with the label comment you want to update
-     3. Set the <img src=""> to your file path, e.g. src="screenshots/collection.png"
-     4. Remove the onerror attribute once the image loads correctly
-     ─────────────────────────────────────────
-     MOCKUP TIPS:
-     • Recommended screenshot size: 1080×2340px (any 9:19–9:20 ratio works)
-     • The image auto-fills the phone screen — no cropping needed
-════════════════════════════════════════════ -->
-<section id="screenshots">
-  <div class="container">
-    <p class="label">Screenshots</p>
-    <h2>Built for real shelves</h2>
-    <p class="sub">Material Design 3, dark theme throughout.</p>
-  </div>
-  <div class="scroll-fade">
-    <div class="scroll-outer">
-      <div class="scroll-track">
-
-        <!-- ── SCREENSHOT 1: My Collection ──────── -->
-        <div>
-          <div class="phone">
-            <div class="phone-screen">
-              <img src="" alt="My Collection"
-                   onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
-              <div class="phone-placeholder" style="display:flex">
-                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#7A8BA3" stroke-width="1.5">
-                  <rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/>
-                  <line x1="9" y1="21" x2="9" y2="9"/>
-                </svg>
-                <span>My Collection</span>
-              </div>
-            </div>
-          </div>
-          <p class="screenshot-caption">My Collection</p>
-        </div>
-
-        <!-- ── SCREENSHOT 2: Edition Grid ───────── -->
-        <div>
-          <div class="phone">
-            <div class="phone-screen">
-              <img src="" alt="Edition Grid"
-                   onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
-              <div class="phone-placeholder" style="display:flex">
-                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#7A8BA3" stroke-width="1.5">
-                  <rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/>
-                  <rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/>
-                </svg>
-                <span>Edition Grid</span>
-              </div>
-            </div>
-          </div>
-          <p class="screenshot-caption">Edition Grid</p>
-        </div>
-
-        <!-- ── SCREENSHOT 3: Volume List ────────── -->
-        <div>
-          <div class="phone">
-            <div class="phone-screen">
-              <img src="" alt="Volume List"
-                   onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
-              <div class="phone-placeholder" style="display:flex">
-                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#7A8BA3" stroke-width="1.5">
-                  <line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/>
-                  <circle cx="3" cy="6" r="1"/><circle cx="3" cy="12" r="1"/><circle cx="3" cy="18" r="1"/>
-                </svg>
-                <span>Volume List</span>
-              </div>
-            </div>
-          </div>
-          <p class="screenshot-caption">Volume List</p>
-        </div>
-
-        <!-- ── SCREENSHOT 4: Manga Detail ───────── -->
-        <div>
-          <div class="phone">
-            <div class="phone-screen">
-              <img src="" alt="Manga Detail"
-                   onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
-              <div class="phone-placeholder" style="display:flex">
-                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#7A8BA3" stroke-width="1.5">
-                  <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
-                  <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
-                </svg>
-                <span>Manga Detail</span>
-              </div>
-            </div>
-          </div>
-          <p class="screenshot-caption">Manga Detail</p>
-        </div>
-
-        <!-- ── SCREENSHOT 5: Search ──────────────── -->
-        <div>
-          <div class="phone">
-            <div class="phone-screen">
-              <img src="" alt="Search"
-                   onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
-              <div class="phone-placeholder" style="display:flex">
-                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#7A8BA3" stroke-width="1.5">
-                  <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
-                </svg>
-                <span>Search</span>
-              </div>
-            </div>
-          </div>
-          <p class="screenshot-caption">Search</p>
-        </div>
-
-        <!-- ── SCREENSHOT 6: Wishlist ────────────── -->
-        <div>
-          <div class="phone">
-            <div class="phone-screen">
-              <img src="" alt="Wishlist"
-                   onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
-              <div class="phone-placeholder" style="display:flex">
-                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#7A8BA3" stroke-width="1.5">
-                  <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
-                </svg>
-                <span>Wishlist</span>
-              </div>
-            </div>
-          </div>
-          <p class="screenshot-caption">Wishlist</p>
-        </div>
-
-      </div><!-- /scroll-track -->
-    </div><!-- /scroll-outer -->
-  </div><!-- /scroll-fade -->
-</section>
-
-
-<!-- ═══════════════════════════════════════════
-     ANDROID BETA
-════════════════════════════════════════════ -->
-<section id="beta">
-  <div class="container">
-    <div class="cta-box">
-      <p class="label" style="margin-bottom:20px">Android</p>
-      <h2>Join the Android Beta</h2>
-      <p>MangaShelf is free and actively in development. Join the beta and help shape the app.</p>
-      <!-- Replace [GOOGLE_FORM_URL] with your actual Google Form link -->
-      <a class="btn-primary" href="[GOOGLE_FORM_URL]" target="_blank" rel="noopener noreferrer">
-        Apply for Beta
-      </a>
-    </div>
-  </div>
-</section>
-
-
-<!-- ═══════════════════════════════════════════
-     iOS WAITLIST
-════════════════════════════════════════════ -->
-<section id="ios">
-  <div class="container">
-    <div class="cta-box">
-      <div class="badge-pill">
-        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
-        </svg>
-        Coming soon
-      </div>
-      <h2>Coming to iOS?</h2>
-      <p>We're gauging interest. Leave your email and we'll notify you if MangaShelf comes to iPhone.</p>
-      <!-- Replace [GOOGLE_FORM_URL_IOS] with your actual Google Form link -->
-      <a class="btn-outline" href="[GOOGLE_FORM_URL_IOS]" target="_blank" rel="noopener noreferrer">
-        Join the iOS Waitlist
-      </a>
-    </div>
-  </div>
-</section>
-
-
-<!-- ═══════════════════════════════════════════
-     FOOTER
-════════════════════════════════════════════ -->
 <footer>
-  <div class="footer-links">
-    <!-- Replace # with your actual privacy policy URL -->
-    <a href="#">Privacy Policy</a>
-    <span class="sep">·</span>
-    <!-- Replace with your actual email -->
-    <a href="mailto:">Contact</a>
+  <div class="container foot">
+    <div class="foot-links">
+      <!-- Replace # with your Privacy Policy URL -->
+      <a href="#">Privacy Policy</a>
+      <span class="sep" aria-hidden="true"></span>
+      <!-- Replace with your email -->
+      <a href="mailto:">Contact</a>
+    </div>
+    <div>Made with <span class="heart" aria-hidden="true">♥</span> by Sok4h from Colombia</div>
   </div>
-  <p class="credit">Made with <span>♥</span> by Sok4h from Colombia</p>
 </footer>
+
+<script>
+  // sticky nav border
+  const nav = document.getElementById('nav');
+  const onScroll = () => nav.classList.toggle('scrolled', window.scrollY > 8);
+  onScroll();
+  window.addEventListener('scroll', onScroll, { passive: true });
+
+  // gallery prev/next
+  const gallery = document.getElementById('gallery');
+  const gPrev   = document.getElementById('gPrev');
+  const gNext   = document.getElementById('gNext');
+  const step = () => {
+    const first = gallery.querySelector('.shot');
+    if (!first) return 260;
+    return first.getBoundingClientRect().width + parseFloat(getComputedStyle(gallery).columnGap || '24');
+  };
+  gPrev.addEventListener('click', () => gallery.scrollBy({ left: -step(), behavior: 'smooth' }));
+  gNext.addEventListener('click', () => gallery.scrollBy({ left:  step(), behavior: 'smooth' }));
+  const updateNav = () => {
+    const max = gallery.scrollWidth - gallery.clientWidth - 2;
+    gPrev.disabled = gallery.scrollLeft <= 2;
+    gNext.disabled = gallery.scrollLeft >= max;
+  };
+  updateNav();
+  gallery.addEventListener('scroll', updateNav, { passive: true });
+  window.addEventListener('resize', updateNav);
+
+  // scroll reveal
+  const io = new IntersectionObserver(
+    entries => entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }),
+    { rootMargin: '0px 0px -8% 0px', threshold: 0.05 }
+  );
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+</script>
 
 </body>
 </html>
