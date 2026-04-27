@@ -3,107 +3,117 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#0B1220" />
   <title>Privacy Policy — MangaShelf</title>
+  <link rel="icon" type="image/png" href="images/logo-final.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
+    :root {
+      --bg:       #0B1220;
+      --surface:  #131F30;
+      --border:   rgba(255,255,255,0.07);
+      --border-strong: rgba(255,255,255,0.12);
+      --primary:  #0066FF;
+      --primary-hover: #1F7AFF;
+      --text:     #E7ECF3;
+      --text-soft:#AFBAC9;
+      --text-muted:#7A8699;
+      --ease: cubic-bezier(0.2, 0, 0, 1);
     }
 
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
     body {
-      background-color: #0B1220;
-      color: #ffffff;
-      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+      -webkit-font-smoothing: antialiased;
       line-height: 1.7;
+      font-size: 16px;
     }
+    a { color: var(--primary); text-decoration: none; transition: color 150ms var(--ease); }
+    a:hover { color: var(--primary-hover); text-decoration: underline; }
 
-    header {
-      padding: 24px 32px;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-      display: flex;
-      align-items: center;
-      gap: 12px;
+    /* ── NAV (same as landing) ── */
+    .nav {
+      position: sticky; top: 0; z-index: 40;
+      backdrop-filter: blur(16px) saturate(150%);
+      -webkit-backdrop-filter: blur(16px) saturate(150%);
+      background: rgba(11,18,32,0.75);
+      border-bottom: 1px solid var(--border);
     }
-
-    header img {
-      width: 36px;
-      height: 36px;
-      border-radius: 8px;
+    .nav-inner {
+      max-width: 1120px; margin: 0 auto;
+      padding-inline: clamp(20px, 5vw, 48px);
+      height: 64px;
+      display: flex; align-items: center; justify-content: space-between; gap: 16px;
     }
-
-    header span {
-      font-size: 18px;
-      font-weight: 700;
-      color: #ffffff;
+    .brand {
+      display: inline-flex; align-items: center; gap: 10px;
+      font-weight: 700; font-size: 15px; color: var(--text); text-decoration: none;
     }
+    .brand:hover { text-decoration: none; color: var(--text); }
+    .brand-logo { width: 30px; height: 30px; border-radius: 8px; overflow: hidden; flex-shrink: 0; }
+    .brand-logo img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .back-link {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-size: 14px; font-weight: 500; color: var(--text-soft);
+      text-decoration: none; transition: color 150ms var(--ease);
+    }
+    .back-link:hover { color: var(--text); text-decoration: none; }
+    .back-link svg { width: 16px; height: 16px; }
 
+    /* ── CONTENT ── */
     main {
-      max-width: 720px;
-      margin: 0 auto;
-      padding: 48px 32px 80px;
+      max-width: 720px; margin: 0 auto;
+      padding: clamp(40px, 8vw, 72px) clamp(20px, 5vw, 48px) 96px;
     }
-
     h1 {
-      font-size: 32px;
-      font-weight: 800;
-      margin-bottom: 8px;
-      color: #ffffff;
+      font-size: clamp(28px, 5vw, 40px); font-weight: 800;
+      letter-spacing: -0.03em; line-height: 1.1;
+      margin-bottom: 10px; color: var(--text);
     }
-
     .last-updated {
-      font-size: 14px;
-      color: rgba(255, 255, 255, 0.4);
-      margin-bottom: 48px;
+      font-size: 13px; color: var(--text-muted); margin-bottom: 52px;
     }
-
     h2 {
-      font-size: 18px;
-      font-weight: 700;
-      color: #0066FF;
-      margin-top: 40px;
-      margin-bottom: 12px;
+      font-size: 16px; font-weight: 700;
+      color: var(--primary);
+      margin-top: 40px; margin-bottom: 12px;
+      letter-spacing: -0.01em;
     }
+    p { color: var(--text-soft); margin-bottom: 16px; font-size: 15px; line-height: 1.7; }
+    ul { color: var(--text-soft); padding-left: 20px; margin-bottom: 16px; font-size: 15px; }
+    ul li { margin-bottom: 8px; }
+    strong { color: var(--text); font-weight: 600; }
 
-    p {
-      color: rgba(255, 255, 255, 0.75);
-      margin-bottom: 16px;
-      font-size: 15px;
-    }
-
-    ul {
-      color: rgba(255, 255, 255, 0.75);
-      padding-left: 20px;
-      margin-bottom: 16px;
-      font-size: 15px;
-    }
-
-    ul li {
-      margin-bottom: 8px;
-    }
-
-    a {
-      color: #0066FF;
-      text-decoration: none;
-    }
-
-    a:hover {
-      text-decoration: underline;
-    }
-
+    /* ── FOOTER ── */
     footer {
-      text-align: center;
-      padding: 32px;
-      color: rgba(255, 255, 255, 0.3);
-      font-size: 13px;
-      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      border-top: 1px solid var(--border); padding-block: 36px; margin-top: 0;
     }
+    .foot {
+      max-width: 1120px; margin: 0 auto;
+      padding-inline: clamp(20px, 5vw, 48px);
+      display: flex; flex-wrap: wrap; gap: 12px 24px;
+      align-items: center; justify-content: space-between;
+      font-size: 14px; color: var(--text-muted);
+    }
+    .foot a { color: var(--text-soft); text-decoration: none; transition: color 150ms var(--ease); }
+    .foot a:hover { color: var(--text); text-decoration: none; }
+    .heart { color: #e05c5c; }
   </style>
 </head>
 <body>
 
-  <header>
-    <span>MangaShelf</span>
+  <header class="nav">
+    <div class="nav-inner">
+      <a class="brand" href="index.html">
+        <span class="brand-logo"><img src="images/logo-final.png" alt="MangaShelf" /></span>
+        MangaShelf
+      </a>
+    </div>
   </header>
 
   <main>
@@ -139,7 +149,10 @@
   </main>
 
   <footer>
-    © 2026 MangaShelf. All rights reserved.
+    <div class="foot">
+      <div>© 2026 MangaShelf. All rights reserved.</div>
+      <div>Made with <span class="heart">♥</span> by Sok4h from Colombia</div>
+    </div>
   </footer>
 
 </body>
