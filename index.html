@@ -533,9 +533,9 @@
           <p>Join the free Android beta and help build the app manga collectors actually deserve.
 
           </p>
-          <p>The app has a built-in feedback button — tell me what works and what doesn't."</p>
+          <p>The app has a built-in feedback button — tell me what works and what doesn't.</p>
           <!-- Replace [GOOGLE_FORM_URL] with your Google Form link -->
-          <a class="btn btn-primary" href="https://groups.google.com/u/3/g/mangashelf-beta" target="_blank" rel="noopener noreferrer">
+          <a id="btn-android" class="btn btn-primary" href="https://groups.google.com/u/3/g/mangashelf-beta" target="_blank" rel="noopener noreferrer">
             Join Beta
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7"/><path d="M7 7h10v10"/></svg>
           </a>
@@ -546,7 +546,7 @@
           <h2>I'm gauging interest.</h2>
           <p>Leave your email and I'll notify you when it's ready</p>
           <!-- Replace [GOOGLE_FORM_URL_IOS] with your Google Form link -->
-          <a class="btn btn-secondary" href="https://tally.so/r/QKxAlY" target="_blank" rel="noopener noreferrer">
+          <a id="btn-ios" class="btn btn-secondary" href="https://tally.so/r/QKxAlY" target="_blank" rel="noopener noreferrer">
             Join iOS Waitlist
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7"/><path d="M7 7h10v10"/></svg>
           </a>
@@ -596,6 +596,14 @@
   updateNav();
   gallery.addEventListener('scroll', updateNav, { passive: true });
   window.addEventListener('resize', updateNav);
+
+  // button click tracking
+  document.getElementById('btn-android').addEventListener('click', function() {
+    gtag('event', 'click_android_beta', { event_category: 'conversion' });
+  });
+  document.getElementById('btn-ios').addEventListener('click', function() {
+    gtag('event', 'click_ios_waitlist', { event_category: 'conversion' });
+  });
 
   // scroll reveal
   const io = new IntersectionObserver(
