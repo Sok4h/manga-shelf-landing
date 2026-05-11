@@ -281,7 +281,7 @@
   .shot-desc { font-size: 13px; color: var(--text-muted); padding-inline: 2px; margin-top: -4px; line-height: 1.4; }
 
   #screenshots { padding-top: clamp(48px, 6vw, 80px); padding-bottom: clamp(32px, 4vw, 56px); }
-  #beta { padding-top: clamp(32px, 4vw, 56px); }
+  #download { padding-top: clamp(32px, 4vw, 56px); }
 
   /* ── BETA + iOS ── */
   .cta-stack { display: grid; gap: 18px; grid-template-columns: 1fr; }
@@ -322,6 +322,16 @@
   .foot-links .sep { width: 3px; height: 3px; border-radius: 999px; background: var(--text-faint); display: inline-block; }
   .heart { color: #e05c5c; }
 
+  /* ── GOOGLE PLAY BADGE ── */
+  .play-btn {
+    display: inline-block;
+    text-decoration: none;
+    transition: transform 150ms var(--ease), opacity 150ms var(--ease);
+  }
+  .play-btn:hover { transform: translateY(-2px); opacity: 0.9; }
+  .play-btn:active { transform: translateY(0); }
+  .play-btn img { height: 52px; width: auto; display: block; }
+
   /* ── REVEAL ── */
   .reveal { opacity: 0; transform: translateY(18px); transition: opacity 600ms var(--ease), transform 600ms var(--ease); }
   .reveal.in { opacity: 1; transform: none; }
@@ -354,10 +364,10 @@
     <nav class="nav-links" aria-label="Primary">
       <a href="#features">Features</a>
       <a href="#screenshots">Screenshots</a>
-      <a href="#beta">Beta</a>
+      <a href="#download">Download</a>
     </nav>
-    <a class="nav-cta" href="#beta">
-      Join Beta
+    <a class="nav-cta" href="#download">
+      Download
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg>
     </a>
   </div>
@@ -376,9 +386,8 @@
         <h1>Your manga, organized.</h1>
         <p class="lede">Track series, volumes and editions. Always know what's missing.</p>
         <div class="hero-ctas">
-          <a class="btn btn-primary" href="#beta">
-            Join the Android Beta
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg>
+          <a class="play-btn" href="https://play.google.com/store/apps/details?id=com.sok4h.mangashelf">
+            <img src="images/google-play-badge.svg" alt="Get it on Google Play" />
           </a>
           <a class="btn btn-secondary" href="#features">See what it does</a>
         </div>
@@ -520,24 +529,21 @@
   </section>
 
   <!-- ── BETA + iOS ── -->
-  <section class="section" id="beta">
+  <section class="section" id="download">
     <div class="container">
       <div class="cta-stack">
 
         <div class="cta-card primary reveal">
           <span class="pill">
             <span class="pill-dot"></span>
-            Android — open beta
+            Available now · Free
           </span>
-          <h2>Help shape MangaShelf.</h2>
-          <p>Join the free Android beta and help build the app manga collectors actually deserve.
-
-          </p>
-          <p>The app has a built-in feedback button — tell me what works and what doesn't.</p>
-          <!-- Replace [GOOGLE_FORM_URL] with your Google Form link -->
-          <a id="btn-android" class="btn btn-primary" href="https://groups.google.com/u/3/g/mangashelf-beta" target="_blank" rel="noopener noreferrer">
-            Join Beta
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7"/><path d="M7 7h10v10"/></svg>
+          <h2>Get MangaShelf free.</h2>
+          <p>Available on Android. No account, no subscription — just your collection.</p>
+          <!-- Replace [PLAY_STORE_URL] with your Google Play link -->
+          <!-- Replace [PLAY_STORE_URL] with your Google Play link -->
+          <a id="btn-android" class="play-btn" href="https://play.google.com/store/apps/details?id=com.sok4h.mangashelf" target="_blank" rel="noopener noreferrer">
+            <img src="images/google-play-badge.svg" alt="Get it on Google Play" />
           </a>
         </div>
 
