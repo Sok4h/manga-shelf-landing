@@ -3,14 +3,40 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-<title>MangaShelf — Your physical manga collection, finally organized.</title>
-<meta name="description" content="MangaShelf is an Android app for physical manga collectors. Track series, volumes, and custom editions. Works offline. No account." />
+<title>MangaShelf — Never buy a duplicate volume again | Physical manga collection tracker</title>
+<meta name="description" content="MangaShelf is the free offline shelf for physical manga collectors. Track series, local editions, owned / missing / read volumes. ★4.6 · 1,000+ downloads on Google Play. EN / ES / DE." />
+<link rel="canonical" href="https://mangashelfapp.com/" />
+<link rel="alternate" hreflang="en" href="https://mangashelfapp.com/" />
+<link rel="alternate" hreflang="es" href="https://mangashelfapp.com/es/" />
+<link rel="alternate" hreflang="x-default" href="https://mangashelfapp.com/" />
 <meta name="theme-color" content="#0B1220" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="MangaShelf" />
+<meta property="og:title" content="MangaShelf — Never buy a duplicate volume again." />
+<meta property="og:description" content="The offline shelf for physical collectors. Local editions, owned/missing/read tracking, wishlist to hunt. ★4.6 · 1,000+ downloads. Free." />
+<meta property="og:url" content="https://mangashelfapp.com/" />
+<meta property="og:image" content="https://mangashelfapp.com/images/images-v2/screenshot-coleccion.jpg" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="MangaShelf — Never buy a duplicate volume again." />
+<meta name="twitter:description" content="Free offline tracker for physical manga collections. ★4.6 · 1,000+ downloads." />
+<meta name="twitter:image" content="https://mangashelfapp.com/images/images-v2/screenshot-coleccion.jpg" />
 <link rel="icon" type="image/png" href="images/logo-final.png" />
 <link rel="apple-touch-icon" href="images/logo-final.png" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"MobileApplication","name":"MangaShelf","operatingSystem":"Android","applicationCategory":"BookApplication","offers":{"@type":"Offer","price":"0"},"aggregateRating":{"@type":"AggregateRating","ratingValue":"4.6","ratingCount":"50"},"inLanguage":["en","es","de"]}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[
+{"@type":"Question","name":"Is MangaShelf free?","acceptedAnswer":{"@type":"Answer","text":"Yes. Free, no account, no subscription."}},
+{"@type":"Question","name":"Do I need an account? Does it work offline?","acceptedAnswer":{"@type":"Answer","text":"No account needed. Your collection lives on your device and works with no signal. Export/import backup included."}},
+{"@type":"Question","name":"What can I track?","acceptedAnswer":{"@type":"Answer","text":"Manga, manhwa and light novels, including your country's local editions and custom editions like 2-in-1."}},
+{"@type":"Question","name":"How is it different from MyAnimeList or AniList?","acceptedAnswer":{"@type":"Answer","text":"Those track what you watched. MangaShelf tracks what you physically own: edition, owned/missing/read separately, plus a wishlist to hunt."}},
+{"@type":"Question","name":"Is online sync coming?","acceptedAnswer":{"@type":"Answer","text":"Today backup is via export/import. Online sync for phone and tablet is in early testing — contact via Settings to join."}},
+{"@type":"Question","name":"Is there an iPhone version?","acceptedAnswer":{"@type":"Answer","text":"Android today. Join the iPhone waitlist below."}}]}
+</script>
 <style>
   :root {
     --bg:        #0B1220;
@@ -24,6 +50,7 @@
     --on-primary: #FFFFFF;
     --primary-container: rgba(0,102,255,0.14);
     --primary-container-ink: #6FA8FF;
+    --paper: #FFD60A;
     --text:      #E7ECF3;
     --text-soft: #AFBAC9;
     --text-muted:#7A8699;
@@ -36,318 +63,186 @@
     --gutter: clamp(20px, 5vw, 48px);
     --ease: cubic-bezier(0.2, 0, 0, 1);
   }
-
   * { box-sizing: border-box; }
   html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
   html, body { margin: 0; }
   body {
-    background: var(--bg);
-    color: var(--text);
+    background: var(--bg); color: var(--text);
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    line-height: 1.5;
-    font-size: 16px;
-    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased; line-height: 1.5; font-size: 16px; overflow-x: hidden;
   }
   img { max-width: 100%; display: block; }
   a { color: inherit; text-decoration: none; }
-  button { font: inherit; color: inherit; }
   ::selection { background: var(--primary); color: #fff; }
-
   .container { max-width: var(--maxw); margin: 0 auto; padding-inline: var(--gutter); }
-
-  h1, h2, h3 { margin: 0; font-weight: 700; }
-  h1 { font-size: clamp(38px, 6.5vw, 68px); line-height: 1.03; letter-spacing: -0.035em; font-weight: 800; }
-  h2 { font-size: clamp(26px, 4vw, 42px); line-height: 1.1; letter-spacing: -0.025em; }
-  h3 { font-size: 19px; line-height: 1.3; font-weight: 600; letter-spacing: -0.01em; }
-
+  h1, h2 { margin: 0; }
+  h1 {
+    font-family: 'Space Grotesk','Inter',sans-serif;
+    font-size: clamp(38px, 6.5vw, 68px); line-height: 1.02; letter-spacing: -0.035em; font-weight: 700;
+    margin-bottom: 20px;
+  }
+  h1 .hl { color: var(--paper); }
+  h2 { font-size: clamp(26px, 4vw, 40px); line-height: 1.1; letter-spacing: -0.025em; font-weight: 700; }
   .eyebrow {
-    
-    text-transform: uppercase; color: var(--primary-container-ink);
+    display: block; font-size: 12px; font-weight: 700; letter-spacing: 0.14em;
+    text-transform: uppercase; color: var(--primary-container-ink); margin-bottom: 14px;
   }
   .lede { color: var(--text-soft); font-size: clamp(15px, 1.5vw, 18px); line-height: 1.6; }
 
-  /* ── NAV ── */
-  .nav {
-    position: sticky; top: 0; z-index: 40;
-    backdrop-filter: blur(16px) saturate(150%);
-    -webkit-backdrop-filter: blur(16px) saturate(150%);
-    background: rgba(11,18,32,0.75);
-    border-bottom: 1px solid transparent;
-    transition: border-color 200ms var(--ease);
-  }
+  /* NAV */
+  .nav { position: sticky; top: 0; z-index: 40; backdrop-filter: blur(16px) saturate(150%); -webkit-backdrop-filter: blur(16px) saturate(150%); background: rgba(11,18,32,0.78); border-bottom: 1px solid transparent; transition: border-color 200ms var(--ease); }
   .nav.scrolled { border-bottom-color: var(--border); }
-  .nav-inner { display: flex; align-items: center; justify-content: space-between; height: 64px; }
-
-  .brand { display: inline-flex; align-items: center; gap: 10px; font-weight: 700; letter-spacing: -0.01em; }
-  .brand-logo {
-    width: 30px; height: 30px; border-radius: 8px;
-    overflow: hidden; flex-shrink: 0;
-  }
+  .nav-inner { display: flex; align-items: center; justify-content: space-between; height: 64px; gap: 12px; }
+  .brand { display: inline-flex; align-items: center; gap: 10px; font-weight: 700; }
+  .brand-logo { width: 30px; height: 30px; border-radius: 8px; overflow: hidden; flex-shrink: 0; }
   .brand-logo img { width: 100%; height: 100%; object-fit: cover; }
-
-  .nav-links { display: none; gap: 28px; font-size: 14px; color: var(--text-soft); }
-  .nav-links a { transition: color 150ms var(--ease); }
+  .nav-links { display: none; gap: 26px; font-size: 14px; color: var(--text-soft); }
   .nav-links a:hover { color: var(--text); }
-  @media (min-width: 720px) { .nav-links { display: inline-flex; } }
-
-  .nav-cta {
-    display: inline-flex; align-items: center; gap: 8px;
-    height: 38px; padding: 0 18px;
-    border-radius: 999px; background: var(--primary); color: var(--on-primary);
-    font-size: 14px; font-weight: 600; border: 0; cursor: pointer;
-    transition: background 150ms var(--ease), transform 150ms var(--ease);
-  }
+  @media (min-width: 820px) { .nav-links { display: inline-flex; } }
+  .nav-right { display: inline-flex; align-items: center; gap: 10px; }
+  .lang { display: inline-flex; border: 1px solid var(--border-strong); border-radius: 999px; overflow: hidden; font-size: 12px; font-weight: 700; }
+  .lang a, .lang span { padding: 7px 12px; color: var(--text-soft); }
+  .lang span { background: var(--surface-2); color: var(--text); }
+  .lang a:hover { color: var(--text); }
+  .nav-cta { display: inline-flex; align-items: center; gap: 8px; height: 38px; padding: 0 18px; border-radius: 999px; background: var(--primary); color: var(--on-primary); font-size: 14px; font-weight: 600; border: 0; cursor: pointer; }
   .nav-cta:hover { background: var(--primary-hover); }
-  .nav-cta:active { transform: translateY(1px); background: var(--primary-pressed); }
   .nav-cta svg { width: 15px; height: 15px; }
 
-  /* ── BUTTONS ── */
-  .btn {
-    display: inline-flex; align-items: center; justify-content: center; gap: 10px;
-    height: 52px; padding: 0 28px; border-radius: 999px;
-    font-size: 16px; font-weight: 600; border: 0; cursor: pointer;
-    transition: background 150ms var(--ease), transform 150ms var(--ease), box-shadow 200ms var(--ease);
-    text-decoration: none; white-space: nowrap;
-  }
+  /* BUTTONS */
+  .btn { display: inline-flex; align-items: center; justify-content: center; gap: 10px; height: 52px; padding: 0 28px; border-radius: 999px; font-size: 16px; font-weight: 600; border: 0; cursor: pointer; white-space: nowrap; }
   .btn svg { width: 18px; height: 18px; flex-shrink: 0; }
-  .btn-primary {
-    background: var(--primary); color: var(--on-primary);
-    box-shadow: 0 8px 28px -8px rgba(0,102,255,0.55);
-  }
-  .btn-primary:hover { background: var(--primary-hover); box-shadow: 0 12px 32px -8px rgba(0,102,255,0.7); }
-  .btn-primary:active { transform: translateY(1px); background: var(--primary-pressed); }
-  .btn-secondary {
-    background: transparent; color: var(--text);
-    border: 1px solid var(--border-strong);
-  }
-  .btn-secondary:hover { background: var(--surface); border-color: rgba(255,255,255,0.2); }
-  .btn-secondary:active { transform: translateY(1px); }
+  .btn-secondary { background: transparent; color: var(--text); border: 1px solid var(--border-strong); }
+  .btn-secondary:hover { background: var(--surface); }
+  .play-btn { display: inline-block; transition: transform 150ms var(--ease), opacity 150ms var(--ease); }
+  .play-btn:hover { transform: translateY(-2px); opacity: 0.92; }
+  .play-btn img { height: 52px; width: auto; display: block; }
 
-  /* ── HERO ── */
-  .hero {
-    position: relative;
-    padding-top: clamp(64px, 11vw, 116px);
-    padding-bottom: clamp(72px, 12vw, 136px);
-    overflow: hidden;
-  }
-  .hero::before {
-    content: '';
-    position: absolute; inset: 0;
-    background: radial-gradient(65% 55% at 50% -5%, rgba(0,102,255,0.13), transparent 70%);
-    pointer-events: none; z-index: 0;
-  }
-  .hero-grid {
-    position: relative; z-index: 1;
-    display: grid; grid-template-columns: 1fr;
-    gap: clamp(48px, 8vw, 88px); align-items: center;
-  }
-  @media (min-width: 960px) { .hero-grid { grid-template-columns: 1.1fr 0.9fr; } }
-
-  .hero-icon {
-    width: 80px; height: 80px; border-radius: 20px;
-    overflow: hidden; margin-bottom: 28px;
-    box-shadow: 0 0 0 1px rgba(255,255,255,0.08), 0 16px 36px -8px rgba(0,102,255,0.4);
-  }
-  .hero-icon img { width: 100%; height: 100%; object-fit: cover; }
-  .hero h1 { margin-bottom: 20px; }
-  .hero .lede { margin-bottom: 36px; }
+  /* HERO */
+  .hero { position: relative; padding-top: clamp(56px, 9vw, 100px); padding-bottom: clamp(56px, 8vw, 100px); overflow: hidden; }
+  .hero::before { content: ''; position: absolute; inset: 0; background: radial-gradient(65% 55% at 50% -5%, rgba(0,102,255,0.15), transparent 70%); pointer-events: none; }
+  .hero::after { content: ''; position: absolute; inset: 0; background-image: radial-gradient(rgba(255,255,255,0.055) 1px, transparent 1px); background-size: 22px 22px; mask-image: radial-gradient(60% 50% at 70% 20%, black, transparent 75%); -webkit-mask-image: radial-gradient(60% 50% at 70% 20%, black, transparent 75%); pointer-events: none; }
+  .hero-grid { position: relative; z-index: 1; display: grid; grid-template-columns: 1fr; gap: clamp(44px, 7vw, 80px); align-items: center; }
+  @media (min-width: 960px) { .hero-grid { grid-template-columns: 1.05fr 0.95fr; } }
+  .trust-pill { display: inline-flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 600; color: var(--text); background: var(--surface); border: 1px solid var(--border-strong); border-radius: 999px; padding: 7px 16px; margin-bottom: 22px; }
+  .trust-pill .stars { color: var(--paper); letter-spacing: 0.05em; }
+  .hero .lede { margin-bottom: 32px; max-width: 46ch; }
   .hero-ctas { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
-  .hero-meta {
-    margin-top: 28px; display: flex; flex-wrap: wrap; gap: 20px;
-    font-size: 13px; color: var(--text-muted);
-  }
-  .hero-meta span { display: inline-flex; align-items: center; gap: 7px; }
-  .hero-meta .dot { width: 5px; height: 5px; border-radius: 999px; background: var(--primary); flex-shrink: 0; }
-  .hero-stat {
-    display: inline-flex; align-items: center; gap: 8px;
-    margin-top: 20px;
-    font-size: 13px; font-weight: 500;
-    color: var(--primary-container-ink);
-    background: var(--primary-container);
-    border-radius: 999px;
-    padding: 5px 14px;
-  }
-  .hero-stat svg { width: 13px; height: 13px; flex-shrink: 0; }
+  .hero-qr { display: none; align-items: center; gap: 12px; margin-top: 22px; font-size: 13px; color: var(--text-muted); }
+  .hero-qr img { width: 72px; height: 72px; border-radius: 12px; border: 1px solid var(--border-strong); background: #fff; }
+  @media (min-width: 960px) { .hero-qr { display: inline-flex; } }
+  .hero-locales { margin-top: 18px; font-size: 13px; color: var(--text-muted); }
 
-  /* mockup images — frames are baked into the PNGs */
-  .phone-wrap {
-    position: relative;
-    display: grid; place-items: center;
-    min-height: 520px;
-  }
-  .phone-main {
-    position: relative; 
-    width: min(290px, 78vw);
-    
-  }
-  .phone-main img { width: 100%; height: auto; }
-  .phone-secondary {
-    position: absolute;
-    width: min(230px, 48vw);
+  /* CSS device frame (raw screenshots, no baked frame) */
+  .hero-device { position: relative; display: grid; place-items: center; }
+  .device { width: min(300px, 78vw); border-radius: 38px; border: 1px solid rgba(255,255,255,0.16); overflow: hidden; background: #000; box-shadow: 0 0 0 8px rgba(255,255,255,0.03), 0 32px 80px -16px rgba(0,102,255,0.45), 0 24px 48px -12px rgba(0,0,0,0.7); }
+  .device img { width: 100%; height: auto; aspect-ratio: 9 / 19.5; object-fit: cover; object-position: top; }
+  .float-card { position: absolute; display: inline-flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 600; background: rgba(19,31,48,0.92); border: 1px solid var(--border-strong); border-radius: 14px; padding: 10px 14px; backdrop-filter: blur(8px); box-shadow: 0 12px 32px rgba(0,0,0,0.5); }
+  .float-card .dot { width: 8px; height: 8px; border-radius: 999px; flex-shrink: 0; }
+  .fc-missing { top: 8%; right: 0; }
+  .fc-missing .dot { background: #FF6B6B; }
+  .fc-wish { bottom: 10%; left: 0; }
+  .fc-wish .dot { background: var(--paper); }
+  @media (max-width: 480px) { .fc-missing { right: -4px; } .fc-wish { left: -4px; } }
 
-    right: -20%; bottom: 2%;
-  }
-  .phone-secondary img { width: 100%; height: auto; }
-  @media (max-width: 720px) {
-    .phone-secondary { display: none; }
-    .phone-main { transform: none; }
-  }
+  /* STATS BAR */
+  .statsbar { border-block: 1px solid var(--border); background: var(--surface); }
+  .statsbar-inner { display: grid; grid-template-columns: repeat(2,1fr); gap: 20px; padding-block: 28px; }
+  @media (min-width: 720px) { .statsbar-inner { grid-template-columns: repeat(4,1fr); } }
+  .stat b { display: block; font-size: clamp(22px,3vw,30px); font-weight: 800; letter-spacing: -0.02em; }
+  .stat b .gold { color: var(--paper); }
+  .stat span { font-size: 13px; color: var(--text-muted); }
 
-  /* ── SECTION SHELL ── */
   section { scroll-margin-top: 80px; }
-  .section { padding-block: clamp(72px, 10vw, 120px); }
-  .section-header { max-width: 640px; margin-bottom: 52px; }
-  .section-header .eyebrow { margin-bottom: 14px; display: block; }
-  .section-header p { margin-top: 14px; }
+  .section { padding-block: clamp(64px, 9vw, 110px); }
+  .section-header { max-width: 660px; margin-bottom: 46px; }
+  .section-header p { margin: 14px 0 0; }
 
-  /* ── FEATURES ── */
+  /* WHY */
+  .why-grid { display: grid; gap: 14px; grid-template-columns: 1fr; }
+  @media (min-width: 760px) { .why-grid { grid-template-columns: repeat(3,1fr); } }
+  .why { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 26px 24px; }
+  .why h3 { font-size: 17px; margin: 0 0 10px; }
+  .why p { margin: 0; color: var(--text-soft); font-size: 15px; line-height: 1.6; }
+  .why .q { display: block; font-size: 13px; color: var(--primary-container-ink); font-style: italic; margin-top: 12px; }
+
+  /* FEATURES */
   #features { background: var(--surface); }
   .features-grid { display: grid; gap: 14px; grid-template-columns: 1fr; }
   @media (min-width: 760px) { .features-grid { grid-template-columns: repeat(3,1fr); } }
-  .feature {
-    background: var(--bg);
-    border: 1px solid var(--border);
-    border-radius: var(--radius-lg);
-    padding: 28px 26px;
-    position: relative; overflow: hidden;
-    transition: border-color 200ms var(--ease), transform 200ms var(--ease);
-  }
+  .feature { background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 28px 26px; position: relative; overflow: hidden; transition: border-color 200ms var(--ease), transform 200ms var(--ease); }
   .feature:hover { border-color: rgba(0,102,255,0.28); transform: translateY(-2px); }
-  .feature .icon {
-    width: 44px; height: 44px; border-radius: 12px;
-    background: var(--primary-container); color: var(--primary-container-ink);
-    display: grid; place-items: center; margin-bottom: 20px;
-  }
+  .feature .icon { width: 44px; height: 44px; border-radius: 12px; background: var(--primary-container); color: var(--primary-container-ink); display: grid; place-items: center; margin-bottom: 20px; }
   .feature .icon svg { width: 22px; height: 22px; }
-  .feature h3 { margin-bottom: 10px; }
+  .feature h3 { margin: 0 0 10px; font-size: 18px; }
   .feature p { margin: 0; color: var(--text-soft); font-size: 15px; line-height: 1.6; }
-  .feature .num {
-    position: absolute; top: 20px; right: 22px;
-    font-size: 11px; font-family: ui-monospace, "SF Mono", monospace;
-    color: var(--text-faint); letter-spacing: 0.1em;
-  }
 
-  /* ── SCREENSHOTS ── */
-  .gallery-head {
-    display: flex; align-items: flex-end; justify-content: space-between;
-    gap: 24px; margin-bottom: 32px; flex-wrap: wrap;
-  }
-  .gallery-head .section-header { margin-bottom: 0; }
-  /* nav buttons only shown on mobile */
-  .gallery-nav { display: none; gap: 10px; }
-  .gallery-nav button {
-    width: 44px; height: 44px; border-radius: 999px;
-    background: var(--surface); border: 1px solid var(--border);
-    color: var(--text); cursor: pointer; display: grid; place-items: center;
-    transition: background 150ms var(--ease), border-color 150ms var(--ease), opacity 150ms var(--ease);
-  }
-  .gallery-nav button:hover { background: var(--surface-2); border-color: var(--border-strong); }
-  .gallery-nav button:disabled { opacity: 0.3; cursor: default; }
-  .gallery-nav button svg { width: 18px; height: 18px; }
+  /* TOUR TABS */
+  .tabs { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 28px; }
+  .tab { height: 42px; padding: 0 20px; border-radius: 999px; border: 1px solid var(--border-strong); background: transparent; color: var(--text-soft); font-size: 14px; font-weight: 600; cursor: pointer; transition: all 150ms var(--ease); }
+  .tab[aria-selected="true"] { background: var(--primary); border-color: var(--primary); color: #fff; }
+  .tab:hover:not([aria-selected="true"]) { background: var(--surface); color: var(--text); }
+  .tour-grid { display: grid; gap: clamp(28px,5vw,64px); grid-template-columns: 1fr; align-items: center; }
+  @media (min-width: 900px) { .tour-grid { grid-template-columns: 0.9fr 1.1fr; } }
+  .tour-copy h3 { font-size: clamp(22px,3vw,30px); margin: 0 0 12px; letter-spacing: -0.02em; }
+  .tour-copy p { color: var(--text-soft); margin: 0 0 18px; font-size: 16px; line-height: 1.6; }
+  .tour-copy ul { margin: 0 0 8px; padding-left: 20px; color: var(--text-soft); font-size: 15px; line-height: 1.7; }
+  .tour-device { display: grid; place-items: center; }
+  .tour-device .device { width: min(280px, 74vw); }
+  .tour-panel[hidden] { display: none; }
 
-  /* Desktop: 3-column grid */
-  .gallery-scroll {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 24px;
-  }
+  /* REVIEWS */
+  #reviews { background: var(--surface); }
+  .reviews-grid { display: grid; gap: 14px; grid-template-columns: 1fr; }
+  @media (min-width: 760px) { .reviews-grid { grid-template-columns: repeat(3,1fr); } }
+  .review { background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 26px 24px; display: flex; flex-direction: column; gap: 12px; }
+  .review .stars { color: var(--paper); font-size: 14px; letter-spacing: 0.1em; }
+  .review blockquote { margin: 0; font-size: 16px; line-height: 1.6; }
+  .review cite { font-style: normal; font-size: 13px; color: var(--text-muted); }
+  .reviews-cta { margin-top: 26px; font-size: 14px; color: var(--text-soft); }
+  .reviews-cta a { color: var(--primary-container-ink); font-weight: 600; }
+  .reviews-cta a:hover { text-decoration: underline; }
 
-  /* Mobile: horizontal scroll, one at a time */
-  @media (max-width: 720px) {
-    .gallery-nav { display: inline-flex; }
-    .gallery-scroll {
-      grid-template-columns: none;
-      grid-auto-flow: column;
-      grid-auto-columns: 78vw;
-      gap: 12px;
-      overflow-x: auto;
-      scroll-snap-type: x mandatory;
-      scroll-behavior: smooth;
-      padding: 8px 11vw 24px;
-      scrollbar-width: none;
-    }
-    .gallery-scroll::-webkit-scrollbar { display: none; }
-    .shot { scroll-snap-align: center; }
-  }
+  /* FAQ */
+  .faq-list { display: grid; gap: 10px; max-width: 760px; }
+  details.faq { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 0; overflow: hidden; }
+  details.faq summary { cursor: pointer; padding: 18px 22px; font-weight: 600; font-size: 15px; list-style: none; display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+  details.faq summary::-webkit-details-marker { display: none; }
+  details.faq summary::after { content: '+'; font-size: 20px; color: var(--primary-container-ink); flex-shrink: 0; }
+  details.faq[open] summary::after { content: '–'; }
+  details.faq .faq-a { padding: 0 22px 20px; color: var(--text-soft); font-size: 15px; line-height: 1.65; margin: 0; }
 
-  .shot { display: flex; flex-direction: column; gap: 12px; }
-  .shot-img { width: 100%; height: auto; transition: transform 200ms var(--ease); }
-  .shot:hover .shot-img { transform: translateY(-3px); }
-  .shot-meta { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; padding-inline: 2px; }
-  .shot-meta .label { font-size: 14px; font-weight: 600; color: var(--text); }
-  .shot-meta .idx { font-size: 11px; font-family: ui-monospace, "SF Mono", monospace; color: var(--text-faint); letter-spacing: 0.1em; flex-shrink: 0; }
-  .shot-desc { font-size: 13px; color: var(--text-muted); padding-inline: 2px; margin-top: -4px; line-height: 1.4; }
-
-  #screenshots { padding-top: clamp(48px, 6vw, 80px); padding-bottom: clamp(32px, 4vw, 56px); }
-  #download { padding-top: clamp(32px, 4vw, 56px); }
-
-  /* ── BETA + iOS ── */
+  /* DOWNLOAD */
   .cta-stack { display: grid; gap: 18px; grid-template-columns: 1fr; }
   @media (min-width: 860px) { .cta-stack { grid-template-columns: 1.3fr 1fr; } }
-  .cta-card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: var(--radius-xl);
-    padding: clamp(32px, 5vw, 52px);
-    position: relative; overflow: hidden;
-  }
-  .cta-card.primary {
-    background: radial-gradient(100% 100% at 0% 0%, rgba(0,102,255,0.16), transparent 55%), var(--surface);
-    border-color: rgba(0,102,255,0.28);
-  }
+  .cta-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-xl); padding: clamp(32px, 5vw, 52px); position: relative; overflow: hidden; }
+  .cta-card.primary { background: radial-gradient(100% 100% at 0% 0%, rgba(0,102,255,0.16), transparent 55%), var(--surface); border-color: rgba(0,102,255,0.28); }
   .cta-card h2 { margin-bottom: 14px; }
   .cta-card p { color: var(--text-soft); margin: 0 0 28px; max-width: 48ch; font-size: 15px; line-height: 1.6; }
-  .pill {
-    display: inline-flex; align-items: center; gap: 8px;
-    height: 26px; padding: 0 12px; border-radius: 999px;
-    font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;
-    background: var(--primary-container); color: var(--primary-container-ink);
-    margin-bottom: 20px;
-  }
+  .pill { display: inline-flex; align-items: center; gap: 8px; height: 26px; padding: 0 12px; border-radius: 999px; font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; background: var(--primary-container); color: var(--primary-container-ink); margin-bottom: 20px; }
   .pill-dot { width: 5px; height: 5px; border-radius: 999px; background: var(--primary-container-ink); }
   .cta-card.secondary .pill { background: rgba(255,255,255,0.06); color: var(--text-soft); }
+  .cta-qr { display: inline-flex; align-items: center; gap: 14px; margin-top: 20px; font-size: 13px; color: var(--text-muted); }
+  .cta-qr img { width: 88px; height: 88px; border-radius: 12px; background: #fff; border: 1px solid var(--border-strong); }
 
-  /* ── FOOTER ── */
   footer { border-top: 1px solid var(--border); padding-block: 40px; margin-top: 24px; }
-  .foot {
-    display: flex; flex-wrap: wrap; gap: 16px 28px;
-    align-items: center; justify-content: space-between;
-    font-size: 14px; color: var(--text-muted);
-  }
+  .foot { display: flex; flex-wrap: wrap; gap: 16px 28px; align-items: center; justify-content: space-between; font-size: 14px; color: var(--text-muted); }
   .foot-links { display: inline-flex; flex-wrap: wrap; gap: 8px 20px; align-items: center; }
-  .foot-links a { color: var(--text-soft); transition: color 150ms var(--ease); }
+  .foot-links a { color: var(--text-soft); }
   .foot-links a:hover { color: var(--text); }
   .foot-links .sep { width: 3px; height: 3px; border-radius: 999px; background: var(--text-faint); display: inline-block; }
   .heart { color: #e05c5c; }
 
-  /* ── GOOGLE PLAY BADGE ── */
-  .play-btn {
-    display: inline-block;
-    text-decoration: none;
-    transition: transform 150ms var(--ease), opacity 150ms var(--ease);
-  }
-  .play-btn:hover { transform: translateY(-2px); opacity: 0.9; }
-  .play-btn:active { transform: translateY(0); }
-  .play-btn img { height: 52px; width: auto; display: block; }
-
-  /* ── REVEAL ── */
   .reveal { opacity: 0; transform: translateY(18px); transition: opacity 600ms var(--ease), transform 600ms var(--ease); }
   .reveal.in { opacity: 1; transform: none; }
-
   @media (prefers-reduced-motion: reduce) {
     *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; }
   }
 </style>
-
-<!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-MFJMGHD44H"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
-
   gtag('config', 'G-MFJMGHD44H');
 </script>
 </head>
@@ -356,208 +251,233 @@
 <header class="nav" id="nav">
   <div class="container nav-inner">
     <a class="brand" href="#top">
-      <span class="brand-logo">
-        <img src="images/logo-final.png" alt="MangaShelf" />
-      </span>
+      <span class="brand-logo"><img src="images/logo-final.png" alt="MangaShelf" width="30" height="30" /></span>
       MangaShelf
     </a>
     <nav class="nav-links" aria-label="Primary">
+      <a href="#why">Why</a>
       <a href="#features">Features</a>
-      <a href="#screenshots">Screenshots</a>
-      <a href="#download">Download</a>
+      <a href="#tour">Tour</a>
+      <a href="#reviews">Reviews</a>
+      <a href="#faq">FAQ</a>
     </nav>
-    <a class="nav-cta" href="#download">
-      Download
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg>
-    </a>
+    <div class="nav-right">
+      <span class="lang" aria-label="Language"><span>EN</span><a href="es/">ES</a></span>
+      <a class="nav-cta" href="https://play.google.com/store/apps/details?id=com.sok4h.mangashelf&utm_source=mangashelfapp.com&utm_medium=landing&utm_campaign=v2&utm_content=nav" data-ev="click_play_nav">
+        Get it on Play
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg>
+      </a>
+    </div>
   </div>
 </header>
 
 <main id="top">
 
-  <!-- ── HERO ── -->
+  <!-- HERO -->
   <section class="hero">
     <div class="container hero-grid">
-
       <div class="reveal">
-        <div class="hero-icon">
-          <img src="images/logo-final.png" alt="MangaShelf app icon" />
-        </div>
-        <h1>Your manga, organized.</h1>
-        <p class="lede">Track series, volumes and editions. Always know what's missing.</p>
+        <span class="trust-pill"><span class="stars" aria-hidden="true">★★★★★</span> 4.6 on Play · 1,000+ downloads · Free</span>
+        <h1>Never buy a <span class="hl">duplicate</span> volume again.</h1>
+        <p class="lede">MangaShelf is the offline shelf for physical collectors — every series, local edition and missing volume in seconds. No account, no subscription.</p>
         <div class="hero-ctas">
-          <a class="play-btn" href="https://play.google.com/store/apps/details?id=com.sok4h.mangashelf">
-            <img src="images/google-play-badge.svg" alt="Get it on Google Play" />
+          <a class="play-btn" data-ev="click_play_hero" href="https://play.google.com/store/apps/details?id=com.sok4h.mangashelf&utm_source=mangashelfapp.com&utm_medium=landing&utm_campaign=v2&utm_content=hero">
+            <img src="images/google-play-badge.svg" alt="Get it on Google Play" width="180" height="52" />
           </a>
-          <a class="btn btn-secondary" href="#features">See what it does</a>
+          <a class="btn btn-secondary" href="#tour">See how it works</a>
         </div>
-         <div class="hero-stat">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
-          Tested with collections of 900+ volumes.
+        <div class="hero-qr">
+          <img src="https://api.qrserver.com/v1/create-qr-code/?size=144x144&data=https%3A%2F%2Fplay.google.com%2Fstore%2Fapps%2Fdetails%3Fid%3Dcom.sok4h.mangashelf" alt="QR code to Google Play" width="72" height="72" loading="lazy" />
+          <span>On desktop? Scan to<br />open it on your phone.</span>
         </div>
-   <!--      <div class="hero-meta">
-          <span><span class="dot"></span>Android</span>
-          <span><span class="dot"></span>Works offline</span>
-          <span><span class="dot"></span>No account, no tracking</span>
-        </div> -->
-       
+        <div class="hero-locales">EN · ES · DE — Auch auf Deutsch</div>
       </div>
-
-      <div class="phone-wrap reveal" aria-hidden="true">
-        <!-- Main hero phone — replace src to update -->
-        <div class="phone-main">
-          <img src="images/Collection-mobile-portrait.png" alt="" loading="lazy" />
+      <div class="hero-device reveal" aria-label="MangaShelf collection screenshot">
+        <div class="device">
+          <img src="images/images-v2/screenshot-coleccion.jpg" alt="My Collection in MangaShelf: 210 series, 967 volumes with progress bars" width="1080" height="2340" fetchpriority="high" />
         </div>
-        <!-- Secondary overlapping phone — replace src to update -->
-        <div class="phone-secondary">
-          <img src="images/edition-detail-grid-portrait.png" alt="" loading="lazy" />
-        </div>
+        <span class="float-card fc-missing"><span class="dot"></span>Missing: Gachiakuta Vol. 5–19</span>
+        <span class="float-card fc-wish"><span class="dot"></span>Wishlist · 174 vols to hunt</span>
       </div>
-
     </div>
   </section>
 
-  <!-- ── FEATURES ── -->
+  <!-- STATS -->
+  <div class="statsbar">
+    <div class="container statsbar-inner reveal">
+      <div class="stat"><b><span class="gold">★</span> 4.6</b><span>on Google Play · 50+ reviews</span></div>
+      <div class="stat"><b>1,000+</b><span>downloads and counting</span></div>
+      <div class="stat"><b>967 vols</b><span>tested in a real 210-series shelf</span></div>
+      <div class="stat"><b>100%</b><span>offline · no account needed</span></div>
+    </div>
+  </div>
+
+  <!-- WHY -->
+  <section class="section" id="why">
+    <div class="container">
+      <div class="section-header reveal">
+        <span class="eyebrow">Why MangaShelf</span>
+        <h2>Built for the store aisle, not the watchlist.</h2>
+        <p class="lede">Generic book apps are clunky. Anime trackers don't know your editions. MangaShelf knows exactly what's on your shelf.</p>
+      </div>
+      <div class="why-grid">
+        <article class="why reveal"><h3>Standing in the store, unsure?</h3><p>Check owned vs missing in seconds — no more duplicates, no more missed volumes.</p><span class="q">“Instead of wondering what volumes I'm missing, I look it up here.” — 5★ review</span></article>
+        <article class="why reveal"><h3>Your country's editions count</h3><p>Standard, deluxe, omnibus, 2-in-1, foreign prints — including custom editions you define.</p><span class="q">“Perfect to put your country's edition on your collection.” — 5★ review</span></article>
+        <article class="why reveal"><h3>Simpler than book apps</h3><p>Look up the series, tap the volumes you own. Track reading separately. Done.</p><span class="q">“I just look up whatever series I have and tap the volumes I own.” — 5★ review</span></article>
+      </div>
+    </div>
+  </section>
+
+  <!-- FEATURES -->
   <section class="section" id="features">
     <div class="container">
       <div class="section-header reveal">
-        <h3 class="eyebrow">Features</h3>
-        <h2>Everything a manga collector actually needs.</h2>
+        <span class="eyebrow">Features</span>
+        <h2>Everything a physical collector actually needs.</h2>
       </div>
       <div class="features-grid">
-
         <article class="feature reveal">
-          <span class="num">01</span>
-          <div class="icon" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h4v16H4z"/><path d="M10 4h4v16h-4z"/><path d="m16 5 3.5 1-3 15-3.5-1z"/></svg>
-          </div>
-          <h3>Never lose track again</h3>
-          <p>Every volume. Owned, missing, read — always at hand.</p>
+          <div class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h4v16H4z"/><path d="M10 4h4v16h-4z"/><path d="m16 5 3.5 1-3 15-3.5-1z"/></svg></div>
+          <h3>My Collection</h3><p>210 series, 967 volumes, always organized — with progress per series and filters.</p>
         </article>
-
         <article class="feature reveal">
-          <span class="num">02</span>
-          <div class="icon" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18"/><path d="M9 4v5"/><path d="M15 4v5"/></svg>
-          </div>
-          <h3>Every edition counts.</h3>
-          <p>Tankōbon, deluxe, omnibus, foreign prints — track them your way</p>
+          <div class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18"/><path d="M9 4v5"/><path d="M15 4v5"/></svg></div>
+          <h3>Local &amp; custom editions</h3><p>Tankōbon, deluxe, omnibus, 2-in-1, foreign prints — official data plus editions you define.</p>
         </article>
-
         <article class="feature reveal">
-          <span class="num">03</span>
-          <div class="icon" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21 12 17l-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
-          </div>
-          <h3>From missing to owned in one tap</h3>
-          <p>Spot it at the store, mark it owned instantly.</p>
+          <div class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21 12 17l-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg></div>
+          <h3>Wishlist to hunt</h3><p>174 volumes grouped by edition with one-tap “mark all” when you find them in the wild.</p>
         </article>
-
+        <article class="feature reveal">
+          <div class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg></div>
+          <h3>Owned vs read, separately</h3><p>Own Vol. 12 but haven't read it? MangaShelf tracks ownership and reading progress apart.</p>
+        </article>
+        <article class="feature reveal">
+          <div class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M4 21h16"/></svg></div>
+          <h3>Offline-first + backup</h3><p>Works with no signal in the store. Your data lives on your device, export/import included.</p>
+        </article>
+        <article class="feature reveal">
+          <div class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg></div>
+          <h3>Search that finds anything</h3><p>Manga, manhwa and light novels — 479 results for “one piece” alone, with type badges.</p>
+        </article>
       </div>
     </div>
   </section>
 
-  <!-- ── SCREENSHOTS ──
-       To replace an image: change the src inside each .shot.
-       Portrait mockups recommended (already phone-framed PNGs).
-  ── -->
-  <section class="section" id="screenshots">
+  <!-- TOUR -->
+  <section class="section" id="tour">
     <div class="container">
-      <div class="gallery-head">
-        <div class="section-header reveal" style="margin-bottom:0">
-          <span class="eyebrow">Screenshots</span>
-          <h2>A quick tour.</h2>
-        </div>
-        <div class="gallery-nav reveal" aria-label="Scroll screenshots">
-          <button type="button" id="gPrev" aria-label="Previous">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
-          </button>
-          <button type="button" id="gNext" aria-label="Next">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 6 6 6-6 6"/></svg>
-          </button>
+      <div class="section-header reveal">
+        <span class="eyebrow">Tour</span>
+        <h2>A quick tour of your new shelf.</h2>
+      </div>
+      <div class="tabs reveal" role="tablist" aria-label="App tour">
+        <button class="tab" role="tab" aria-selected="true" data-tab="t-collection">Collection</button>
+        <button class="tab" role="tab" aria-selected="false" data-tab="t-editions">Editions</button>
+        <button class="tab" role="tab" aria-selected="false" data-tab="t-grid">Volume grid</button>
+        <button class="tab" role="tab" aria-selected="false" data-tab="t-wishlist">Wishlist</button>
+        <button class="tab" role="tab" aria-selected="false" data-tab="t-search">Search</button>
+        <button class="tab" role="tab" aria-selected="false" data-tab="t-stats">Stats</button>
+      </div>
+
+      <div class="tour-panel reveal" id="t-collection" role="tabpanel">
+        <div class="tour-grid">
+          <div class="tour-device"><div class="device"><img src="images/images-v2/screenshot-coleccion.jpg" alt="My Collection: 210 series and 967 volumes" width="1080" height="2340" loading="lazy" /></div></div>
+          <div class="tour-copy"><h3>Your whole shelf, one glance.</h3><p>Series, volumes, read progress and wishlist totals up top. Per-series bars show exactly how complete you are.</p><ul><li>Monster 1/18 · Death Note 12/18 · Gachiakuta 4/19</li><li>“2 Editions” badge when a series has variants</li></ul></div>
         </div>
       </div>
-    </div>
-
-    <div class="container">
-      <div class="gallery-scroll" id="gallery" role="list">
-
-        <!-- 01 My Collection -->
-        <figure class="shot" role="listitem">
-          <img class="shot-img" src="images/Collection-mobile-portrait.png" alt="My Collection screen" loading="lazy" />
-          <figcaption class="shot-meta"><span class="label">My Collection</span><span class="idx">01 / 06</span></figcaption>
-          <p class="shot-desc">208 series, always organized</p>
-        </figure>
-
-        <!-- 02 Edition Grid -->
-        <figure class="shot" role="listitem">
-          <img class="shot-img" src="images/edition-detail-grid-portrait.png" alt="Edition grid view" loading="lazy" />
-          <figcaption class="shot-meta"><span class="label">Edition Grid</span><span class="idx">02 / 06</span></figcaption>
-          <p class="shot-desc">Owned vs missing, at a glance</p>
-        </figure>
-
-        <!-- 03 Volume List -->
-        <figure class="shot" role="listitem">
-          <img class="shot-img" src="images/edition-detail-list-portrait.png" alt="Volume list view" loading="lazy" />
-          <figcaption class="shot-meta"><span class="label">Volume List</span><span class="idx">03 / 06</span></figcaption>
-          <p class="shot-desc">Track ownership and reading separately</p>
-        </figure>
-
-        <!-- 04 Manga Detail -->
-        <figure class="shot" role="listitem">
-          <img class="shot-img" src="images/Manga-detail-mobile-portrait.png" alt="Manga detail screen" loading="lazy" />
-          <figcaption class="shot-meta"><span class="label">Manga Detail</span><span class="idx">04 / 06</span></figcaption>
-          <p class="shot-desc">Multiple editions, one series</p>
-        </figure>
-
-        <!-- 05 Search -->
-        <figure class="shot" role="listitem">
-          <img class="shot-img" src="images/seach-mobile-portrait.png" alt="Manga search screen" loading="lazy" />
-          <figcaption class="shot-meta"><span class="label">Search</span><span class="idx">05 / 06</span></figcaption>
-          <p class="shot-desc">Find any series instantly</p>
-        </figure>
-
-        <!-- 06 Wishlist -->
-        <figure class="shot" role="listitem">
-          <img class="shot-img" src="images/wishlist-mobile-portrait.png" alt="Wishlist screen" loading="lazy" />
-          <figcaption class="shot-meta"><span class="label">Wishlist</span><span class="idx">06 / 06</span></figcaption>
-          <p class="shot-desc">Your hunting list, grouped by edition</p>
-        </figure>
-
+      <div class="tour-panel" id="t-editions" role="tabpanel" hidden>
+        <div class="tour-grid">
+          <div class="tour-device"><div class="device"><img src="images/images-v2/screenshot-edicion.jpg" alt="Manga detail with custom 2-in-1 and Standard official editions" width="1080" height="2340" loading="lazy" /></div></div>
+          <div class="tour-copy"><h3>Every edition counts.</h3><p>Official data that syncs automatically, plus personalized editions you define — like a 2-in-1 for releases that bundle volumes in your country.</p><ul><li>Standard edition · OFFICIAL · 12/12 · 100%</li><li>2 in 1 · Personalized by you · 0/6</li></ul></div>
+        </div>
+      </div>
+      <div class="tour-panel" id="t-grid" role="tabpanel" hidden>
+        <div class="tour-grid">
+          <div class="tour-device"><div class="device"><img src="images/images-v2/screenshot-detalle-edicion-grid.jpg" alt="Edition volume grid with owned checkmarks" width="1080" height="2340" loading="lazy" /></div></div>
+          <div class="tour-copy"><h3>Owned vs missing, at a glance.</h3><p>12/12 owned, 12 read, 0 wishlist — with filters for All, Owned, Missing and Wishlist. Spot the gap before you pay.</p></div>
+        </div>
+      </div>
+      <div class="tour-panel" id="t-wishlist" role="tabpanel" hidden>
+        <div class="tour-grid">
+          <div class="tour-device"><div class="device"><img src="images/images-v2/screenshot-wishlist.jpg" alt="Wishlist grouped by edition with mark-all buttons" width="1080" height="2340" loading="lazy" /></div></div>
+          <div class="tour-copy"><h3>Your hunting list.</h3><p>174 volumes across 60 series, grouped by edition. Tap + to claim one, or “Mark all” when you strike gold.</p></div>
+        </div>
+      </div>
+      <div class="tour-panel" id="t-search" role="tabpanel" hidden>
+        <div class="tour-grid">
+          <div class="tour-device"><div class="device"><img src="images/images-v2/screenshot-busqueda.jpg" alt="Manga search results for one piece with type badges" width="1080" height="2340" loading="lazy" /></div></div>
+          <div class="tour-copy"><h3>Find any series instantly.</h3><p>Manga, manhwa and light novels with clear type badges — main series, spin-offs and specials included.</p></div>
+        </div>
+      </div>
+      <div class="tour-panel" id="t-stats" role="tabpanel" hidden>
+        <div class="tour-grid">
+          <div class="tour-device"><div class="device"><img src="images/images-v2/screenshot-stats.jpg" alt="Stats: volumes in collection, read, completion" width="1080" height="2340" loading="lazy" /></div></div>
+          <div class="tour-copy"><h3>Watch the shelf grow.</h3><p>967 in collection, 1,232 missing, 74 of 210 series complete — completion bars from just-started to complete.</p></div>
+        </div>
       </div>
     </div>
   </section>
 
-  <!-- ── BETA + iOS ── -->
+  <!-- REVIEWS -->
+  <section class="section" id="reviews">
+    <div class="container">
+      <div class="section-header reveal">
+        <span class="eyebrow">Reviews</span>
+        <h2>Collectors rate it 4.6★.</h2>
+      </div>
+      <div class="reviews-grid">
+        <article class="review reveal"><span class="stars" aria-label="5 out of 5 stars">★★★★★</span><blockquote>“Instead of going out wondering what volumes I'm missing, I can look it up here!”</blockquote><cite>— 5★ review, Google Play</cite></article>
+        <article class="review reveal"><span class="stars" aria-label="5 out of 5 stars">★★★★★</span><blockquote>“I just look up whatever series I have and tap the volumes I own. Easy 5 stars for doing exactly what I wanted.”</blockquote><cite>— 5★ review, Google Play</cite></article>
+        <article class="review reveal"><span class="stars" aria-label="5 out of 5 stars">★★★★★</span><blockquote>“I had always been looking for a simple and effective app to catalog my manga collection. I've finally found it!”</blockquote><cite>— 5★ review, Google Play</cite></article>
+      </div>
+      <p class="reviews-cta reveal"><a href="https://play.google.com/store/apps/details?id=com.sok4h.mangashelf&utm_source=mangashelfapp.com&utm_medium=landing&utm_campaign=v2&utm_content=reviews" data-ev="click_play_reviews">Read all reviews on Google Play →</a></p>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="section" id="faq">
+    <div class="container">
+      <div class="section-header reveal">
+        <span class="eyebrow">What collectors ask</span>
+        <h2>Quick answers.</h2>
+      </div>
+      <div class="faq-list reveal">
+        <details class="faq" open><summary>Is it free?</summary><p class="faq-a">Yes. Free, no account, no subscription — just your collection.</p></details>
+        <details class="faq"><summary>Do I need an account? Does it work offline?</summary><p class="faq-a">No account needed. Your collection lives on your device and works with no signal in the store. Export/import backup is included.</p></details>
+        <details class="faq"><summary>What can I track?</summary><p class="faq-a">Manga, manhwa and light novels — including your country's local editions. Create custom editions (like 2-in-1) with the title and volume count you need.</p></details>
+        <details class="faq"><summary>How is it different from MyAnimeList or AniList?</summary><p class="faq-a">Those track what you watched. MangaShelf tracks what you physically own: edition, owned / missing / read separately, plus a grouped wishlist for hunting.</p></details>
+        <details class="faq"><summary>Is online sync coming?</summary><p class="faq-a">Today backup is via export/import. Online sync for phone + tablet is in early testing — contact me from Settings if you want in.</p></details>
+        <details class="faq"><summary>Is there an iPhone version?</summary><p class="faq-a">Android today. Join the iPhone waitlist below and I'll notify you.</p></details>
+      </div>
+    </div>
+  </section>
+
+  <!-- DOWNLOAD -->
   <section class="section" id="download">
     <div class="container">
       <div class="cta-stack">
-
         <div class="cta-card primary reveal">
-          <span class="pill">
-            <span class="pill-dot"></span>
-            Available now · Free
-          </span>
+          <span class="pill"><span class="pill-dot"></span>Available now · Free · 4.6★</span>
           <h2>Get MangaShelf free.</h2>
-          <p>Available on Android. No account, no subscription — just your collection.</p>
-          <!-- Replace [PLAY_STORE_URL] with your Google Play link -->
-          <!-- Replace [PLAY_STORE_URL] with your Google Play link -->
-          <a id="btn-android" class="play-btn" href="https://play.google.com/store/apps/details?id=com.sok4h.mangashelf" target="_blank" rel="noopener noreferrer">
-            <img src="images/google-play-badge.svg" alt="Get it on Google Play" />
+          <p>1,000+ collectors already track their shelf. Android · works offline · no account. Also in Spanish and German.</p>
+          <a data-ev="click_play_final" class="play-btn" href="https://play.google.com/store/apps/details?id=com.sok4h.mangashelf&utm_source=mangashelfapp.com&utm_medium=landing&utm_campaign=v2&utm_content=final" target="_blank" rel="noopener noreferrer">
+            <img src="images/google-play-badge.svg" alt="Get it on Google Play" width="180" height="52" />
           </a>
+          <div class="cta-qr">
+            <img src="https://api.qrserver.com/v1/create-qr-code/?size=176x176&data=https%3A%2F%2Fplay.google.com%2Fstore%2Fapps%2Fdetails%3Fid%3Dcom.sok4h.mangashelf" alt="QR code to Google Play" width="88" height="88" loading="lazy" />
+            <span>Scan with your phone<br />to install.</span>
+          </div>
         </div>
-
         <div class="cta-card secondary reveal" id="ios">
           <span class="pill">Want MangaShelf on iPhone?</span>
-          <h2>I'm gauging interest.</h2>
-          <p>Leave your email and I'll notify you when it's ready</p>
-          <!-- Replace [GOOGLE_FORM_URL_IOS] with your Google Form link -->
-          <a id="btn-ios" class="btn btn-secondary" href="https://tally.so/r/QKxAlY" target="_blank" rel="noopener noreferrer">
+          <h2>Get notified at launch.</h2>
+          <p>Leave your email and I'll write you when the iOS version is ready. No spam, one email.</p>
+          <a data-ev="click_ios_waitlist" class="btn btn-secondary" href="https://tally.so/r/QKxAlY" target="_blank" rel="noopener noreferrer">
             Join iOS Waitlist
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7"/><path d="M7 7h10v10"/></svg>
           </a>
         </div>
-
       </div>
     </div>
   </section>
@@ -569,47 +489,45 @@
     <div class="foot-links">
       <a href="privacy.html">Privacy Policy</a>
       <span class="sep" aria-hidden="true"></span>
-      <!-- Replace with your email -->
       <a href="mailto:sok4hdev@gmail.com">Contact</a>
+      <span class="sep" aria-hidden="true"></span>
+      <a href="https://play.google.com/store/apps/details?id=com.sok4h.mangashelf&utm_source=mangashelfapp.com&utm_medium=landing&utm_campaign=v2&utm_content=footer" data-ev="click_play_footer">Google Play</a>
     </div>
     <div>Made with <span class="heart" aria-hidden="true">♥</span> by Sok4h from Colombia</div>
   </div>
 </footer>
 
+<noscript><style>.reveal{opacity:1 !important;transform:none !important}</style></noscript>
 <script>
-  // sticky nav border
+  // sticky nav
   const nav = document.getElementById('nav');
   const onScroll = () => nav.classList.toggle('scrolled', window.scrollY > 8);
   onScroll();
   window.addEventListener('scroll', onScroll, { passive: true });
 
-  // gallery prev/next
-  const gallery = document.getElementById('gallery');
-  const gPrev   = document.getElementById('gPrev');
-  const gNext   = document.getElementById('gNext');
-  const step = () => {
-    const first = gallery.querySelector('.shot');
-    if (!first) return 260;
-    return first.getBoundingClientRect().width + parseFloat(getComputedStyle(gallery).columnGap || '24');
-  };
-  gPrev.addEventListener('click', () => gallery.scrollBy({ left: -step(), behavior: 'smooth' }));
-  gNext.addEventListener('click', () => gallery.scrollBy({ left:  step(), behavior: 'smooth' }));
-  const updateNav = () => {
-    const max = gallery.scrollWidth - gallery.clientWidth - 2;
-    gPrev.disabled = gallery.scrollLeft <= 2;
-    gNext.disabled = gallery.scrollLeft >= max;
-  };
-  updateNav();
-  gallery.addEventListener('scroll', updateNav, { passive: true });
-  window.addEventListener('resize', updateNav);
+  // tour tabs
+  const tabs = Array.from(document.querySelectorAll('.tab'));
+  const panels = Array.from(document.querySelectorAll('.tour-panel'));
+  function selectTab(name, track) {
+    tabs.forEach(t => t.setAttribute('aria-selected', t.dataset.tab === name ? 'true' : 'false'));
+    panels.forEach(p => { p.hidden = p.id !== name; p.classList.toggle('reveal', p.id === name); if (p.id === name) requestAnimationFrame(() => p.classList.add('in')); });
+    if (track && typeof gtag === 'function') gtag('event', 'tab_tour_view', { tab: name });
+  }
+  tabs.forEach(t => t.addEventListener('click', () => selectTab(t.dataset.tab, true)));
+  selectTab('t-collection', false);
 
-  // button click tracking
-  document.getElementById('btn-android').addEventListener('click', function() {
-    gtag('event', 'click_android_beta', { event_category: 'conversion' });
+  // analytics events (delegated)
+  document.addEventListener('click', (e) => {
+    const el = e.target.closest('[data-ev]');
+    if (!el || typeof gtag !== 'function') return;
+    gtag('event', el.getAttribute('data-ev'), { event_category: 'conversion' });
   });
-  document.getElementById('btn-ios').addEventListener('click', function() {
-    gtag('event', 'click_ios_waitlist', { event_category: 'conversion' });
-  });
+  // hero view
+  if ('IntersectionObserver' in window) {
+    const hero = document.querySelector('.hero');
+    const io2 = new IntersectionObserver((es) => es.forEach(x => { if (x.isIntersecting && typeof gtag === 'function') { gtag('event', 'view_hero'); io2.disconnect(); } }), { threshold: 0.4 });
+    if (hero) io2.observe(hero);
+  }
 
   // scroll reveal
   const io = new IntersectionObserver(
