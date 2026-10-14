@@ -90,14 +90,14 @@
   .lede { color: var(--text-soft); font-size: clamp(15px, 1.5vw, 18px); line-height: 1.6; }
   .nav { position: sticky; top: 0; z-index: 40; backdrop-filter: blur(16px) saturate(150%); -webkit-backdrop-filter: blur(16px) saturate(150%); background: rgba(11,18,32,0.78); border-bottom: 1px solid transparent; transition: border-color 200ms var(--ease); }
   .nav.scrolled { border-bottom-color: var(--border); }
-  .nav-inner { display: flex; align-items: center; justify-content: space-between; height: 64px; gap: 12px; }
+  .nav-inner { display: flex; align-items: center; justify-content: space-between; height: 64px; gap: 10px; }
   .brand { display: inline-flex; align-items: center; gap: 10px; font-weight: 700; }
   .brand-logo { width: 30px; height: 30px; border-radius: 8px; overflow: hidden; flex-shrink: 0; }
   .brand-logo img { width: 100%; height: 100%; object-fit: cover; }
   .nav-links { display: none; gap: 26px; font-size: 14px; color: var(--text-soft); }
   .nav-links a:hover { color: var(--text); }
   @media (min-width: 820px) { .nav-links { display: inline-flex; } }
-  .nav-right { display: inline-flex; align-items: center; gap: 10px; }
+  .nav-right { display: inline-flex; align-items: center; gap: 8px; }
   .lang { display: inline-flex; border: 1px solid var(--border-strong); border-radius: 999px; overflow: hidden; font-size: 12px; font-weight: 700; }
   .lang a, .lang span { padding: 7px 12px; color: var(--text-soft); }
   .lang span { background: var(--surface-2); color: var(--text); }
@@ -105,6 +105,14 @@
   .nav-cta { display: inline-flex; align-items: center; gap: 8px; height: 38px; padding: 0 18px; border-radius: 999px; background: var(--primary); color: var(--on-primary); font-size: 14px; font-weight: 600; border: 0; cursor: pointer; }
   .nav-cta:hover { background: var(--primary-hover); }
   .nav-cta svg { width: 15px; height: 15px; }
+  @media (max-width: 480px) {
+    .container { --gutter: 16px; }
+    .nav-inner { gap: 6px; }
+    .nav-right { gap: 6px; }
+    .lang a, .lang span { padding-inline: 9px; }
+    .nav-cta { padding-inline: 10px; white-space: nowrap; }
+    .nav-cta svg { display: none; }
+  }
   .btn { display: inline-flex; align-items: center; justify-content: center; gap: 10px; height: 52px; padding: 0 28px; border-radius: 999px; font-size: 16px; font-weight: 600; border: 0; cursor: pointer; white-space: nowrap; }
   .btn svg { width: 18px; height: 18px; flex-shrink: 0; }
   .btn-secondary { background: transparent; color: var(--text); border: 1px solid var(--border-strong); }
@@ -112,7 +120,7 @@
   .play-btn { display: inline-block; transition: transform 150ms var(--ease), opacity 150ms var(--ease); }
   .play-btn:hover { transform: translateY(-2px); opacity: 0.92; }
   .play-btn img { height: 52px; width: auto; display: block; }
-  .hero { position: relative; padding-top: clamp(56px, 9vw, 100px); padding-bottom: clamp(56px, 8vw, 100px); overflow: hidden; }
+  .hero { position: relative; padding-top: clamp(44px, 8vw, 100px); padding-bottom: clamp(44px, 8vw, 100px); overflow: hidden; }
   .hero::before { content: ''; position: absolute; inset: 0; background: radial-gradient(65% 55% at 50% -5%, rgba(0,102,255,0.15), transparent 70%); pointer-events: none; }
   .hero::after { content: ''; position: absolute; inset: 0; background-image: radial-gradient(rgba(255,255,255,0.055) 1px, transparent 1px); background-size: 22px 22px; mask-image: radial-gradient(60% 50% at 70% 20%, black, transparent 75%); -webkit-mask-image: radial-gradient(60% 50% at 70% 20%, black, transparent 75%); pointer-events: none; }
   .hero-grid { position: relative; z-index: 1; display: grid; grid-template-columns: 1fr; gap: clamp(44px, 7vw, 80px); align-items: center; }
@@ -121,6 +129,7 @@
   .trust-pill .stars { color: var(--paper); letter-spacing: 0.05em; }
   .hero .lede { margin-bottom: 32px; max-width: 46ch; }
   .hero-ctas { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+  .hero-ctas .play-btn { flex: 0 0 auto; }
   .hero-qr { display: none; align-items: center; gap: 12px; margin-top: 22px; font-size: 13px; color: var(--text-muted); }
   .hero-qr img { width: 72px; height: 72px; border-radius: 12px; border: 1px solid var(--border-strong); background: #fff; }
   @media (min-width: 960px) { .hero-qr { display: inline-flex; } }
@@ -180,6 +189,7 @@
   .review blockquote { margin: 0; font-size: 16px; line-height: 1.6; }
   .review cite { font-style: normal; font-size: 13px; color: var(--text-muted); }
   .reviews-cta { margin-top: 26px; font-size: 14px; color: var(--text-soft); }
+  .reviews-download { margin-top: 16px; }
   .reviews-cta a { color: var(--primary-container-ink); font-weight: 600; }
   .reviews-cta a:hover { text-decoration: underline; }
   .faq-list { display: grid; gap: 10px; max-width: 760px; }
@@ -198,7 +208,8 @@
   .pill { display: inline-flex; align-items: center; gap: 8px; height: 26px; padding: 0 12px; border-radius: 999px; font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; background: var(--primary-container); color: var(--primary-container-ink); margin-bottom: 20px; }
   .pill-dot { width: 5px; height: 5px; border-radius: 999px; background: var(--primary-container-ink); }
   .cta-card.secondary .pill { background: rgba(255,255,255,0.06); color: var(--text-soft); }
-  .cta-qr { display: flex; align-items: center; gap: 18px; margin-top: 28px; padding-top: 24px; border-top: 1px solid var(--border); font-size: 13px; color: var(--text-muted); }
+  .cta-qr { display: none; align-items: center; gap: 18px; margin-top: 28px; padding-top: 24px; border-top: 1px solid var(--border); font-size: 13px; color: var(--text-muted); }
+  @media (min-width: 700px) { .cta-qr { display: flex; } }
   .cta-qr img { width: 88px; height: 88px; border-radius: 12px; background: #fff; border: 1px solid var(--border-strong); padding: 8px; flex-shrink: 0; }
   .cta-qr span { max-width: 22ch; line-height: 1.5; }
   footer { border-top: 1px solid var(--border); padding-block: 40px; margin-top: 24px; }
@@ -208,8 +219,17 @@
   .foot-links a:hover { color: var(--text); }
   .foot-links .sep { width: 3px; height: 3px; border-radius: 999px; background: var(--text-faint); display: inline-block; }
   .heart { color: #e05c5c; }
-  .reveal { opacity: 0; transform: translateY(18px); transition: opacity 600ms var(--ease), transform 600ms var(--ease); }
-  .reveal.in { opacity: 1; transform: none; }
+  .supports-reveal .reveal { opacity: 0; transform: translateY(18px); transition: opacity 600ms var(--ease), transform 600ms var(--ease); }
+  .supports-reveal .reveal.in { opacity: 1; transform: none; }
+  @media (max-width: 600px) {
+    .hero { padding-block: 42px; }
+    .hero-grid { gap: 32px; }
+    h1 { font-size: clamp(34px, 10vw, 48px); margin-bottom: 16px; }
+    .trust-pill { padding: 7px 12px; margin-bottom: 16px; font-size: 12px; }
+    .hero .lede { margin-bottom: 22px; }
+    .hero-ctas { align-items: flex-start; gap: 10px; }
+    .hero-ctas .btn { min-height: 48px; }
+  }
   @media (prefers-reduced-motion: reduce) {
     *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; }
   }
@@ -240,7 +260,7 @@
     <div class="nav-right">
       <span class="lang" aria-label="Idioma"><a href="../">EN</a><span>ES</span></span>
       <a class="nav-cta" href="https://play.google.com/store/apps/details?id=com.sok4h.mangashelf&utm_source=mangashelfapp.com&utm_medium=landing&utm_campaign=v2&utm_content=nav-es" data-ev="click_play_nav">
-        Descargar
+        Instalar
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg>
       </a>
     </div>
@@ -252,7 +272,7 @@
   <section class="hero">
     <div class="container hero-grid">
       <div class="reveal">
-        <span class="trust-pill"><span class="stars" aria-hidden="true">★★★★★</span> 4.6 en Play · +1.000 descargas · Gratis</span>
+        <span class="trust-pill">Para coleccionistas de manga físico</span>
         <h1>Nunca más compres un tomo <span class="hl">duplicado</span>.</h1>
         <p class="lede">MangaShelf es el estante offline para coleccionistas de manga físico — cada serie, edición local y tomo faltante en segundos. Sin cuenta, sin suscripción.</p>
         <div class="hero-ctas">
@@ -269,7 +289,10 @@
       </div>
       <div class="hero-device reveal" aria-label="Captura de Mi Colección en MangaShelf">
         <div class="device">
-          <img src="../images/images-v2/screenshot-coleccion.jpg" alt="Mi Colección en MangaShelf: 210 series, 967 tomos con barras de progreso" width="1080" height="2340" fetchpriority="high" />
+          <picture>
+            <source type="image/webp" srcset="../images/images-v2/screenshot-coleccion-320.webp 320w, ../images/images-v2/screenshot-coleccion-640.webp 640w, ../images/images-v2/screenshot-coleccion-960.webp 960w" sizes="(max-width: 600px) 78vw, 300px" />
+            <img src="../images/images-v2/screenshot-coleccion.jpg" srcset="../images/images-v2/screenshot-coleccion-320.jpg 320w, ../images/images-v2/screenshot-coleccion-640.jpg 640w, ../images/images-v2/screenshot-coleccion-960.jpg 960w" sizes="(max-width: 600px) 78vw, 300px" alt="Mi Colección en MangaShelf: 210 series, 967 tomos con barras de progreso" width="1080" height="2340" fetchpriority="high" />
+          </picture>
         </div>
         <span class="float-card fc-missing"><span class="dot"></span>Faltan: Gachiakuta Vol. 5–19</span>
         <span class="float-card fc-wish"><span class="dot"></span>Wishlist · 174 para cazar</span>
@@ -394,7 +417,7 @@
     <div class="container">
       <div class="section-header reveal">
         <span class="eyebrow">Opiniones</span>
-        <h2>Los coleccionistas le dan 4.6★.</h2>
+        <h2>Lo que cuentan sus coleccionistas.</h2>
       </div>
       <div class="reviews-grid">
         <article class="review reveal"><span class="stars" aria-label="5 de 5 estrellas">★★★★★</span><blockquote>"Instead of going out wondering what volumes I'm missing, I can look it up here!"</blockquote><cite>— reseña 5★, Google Play</cite></article>
@@ -402,6 +425,7 @@
         <article class="review reveal"><span class="stars" aria-label="5 de 5 estrellas">★★★★★</span><blockquote>"I had always been looking for a simple and effective app to catalog my manga collection. I've finally found it!"</blockquote><cite>— reseña 5★, Google Play</cite></article>
       </div>
       <p class="reviews-cta reveal"><a href="https://play.google.com/store/apps/details?id=com.sok4h.mangashelf&utm_source=mangashelfapp.com&utm_medium=landing&utm_campaign=v2&utm_content=reviews-es" data-ev="click_play_reviews">Leer todas las reseñas en Google Play →</a></p>
+      <p class="reviews-download reveal"><a class="nav-cta" href="https://play.google.com/store/apps/details?id=com.sok4h.mangashelf&utm_source=mangashelfapp.com&utm_medium=landing&utm_campaign=v2&utm_content=reviews-cta-es" data-ev="click_play_reviews_cta">Descarga MangaShelf gratis</a></p>
     </div>
   </section>
 
@@ -428,7 +452,7 @@
         <div class="cta-card primary reveal">
           <span class="pill"><span class="pill-dot"></span>Disponible · Gratis · 4.6★</span>
           <h2>Descarga MangaShelf gratis.</h2>
-          <p>Más de 1.000 coleccionistas ya organizan su estante. Android · funciona offline · sin cuenta. También en inglés y alemán.</p>
+          <p>Organiza tu colección física en Android, sin conexión y sin cuenta. También disponible en inglés y alemán.</p>
           <a data-ev="click_play_final" class="play-btn" href="https://play.google.com/store/apps/details?id=com.sok4h.mangashelf&utm_source=mangashelfapp.com&utm_medium=landing&utm_campaign=v2&utm_content=final-es" target="_blank" rel="noopener noreferrer">
             <img src="../images/google-play-badge.svg" alt="Disponible en Google Play" width="180" height="52" />
           </a>
@@ -486,15 +510,18 @@
     gtag('event', el.getAttribute('data-ev'), { event_category: 'conversion' });
   });
   if ('IntersectionObserver' in window) {
+    document.documentElement.classList.add('supports-reveal');
     const hero = document.querySelector('.hero');
     const io2 = new IntersectionObserver((es) => es.forEach(x => { if (x.isIntersecting && typeof gtag === 'function') { gtag('event', 'view_hero'); io2.disconnect(); } }), { threshold: 0.4 });
     if (hero) io2.observe(hero);
   }
-  const io = new IntersectionObserver(
-    entries => entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }),
-    { rootMargin: '0px 0px -8% 0px', threshold: 0.05 }
-  );
-  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+  if ('IntersectionObserver' in window) {
+    const io = new IntersectionObserver(
+      entries => entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }),
+      { rootMargin: '0px 0px -8% 0px', threshold: 0.05 }
+    );
+    document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+  }
 </script>
 
 </body>
